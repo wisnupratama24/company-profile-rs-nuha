@@ -1,0 +1,1 @@
+export { default as DoctorSchedule } from "./doctor-schedule";
