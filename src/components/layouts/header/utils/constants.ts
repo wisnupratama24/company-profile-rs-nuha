@@ -9,8 +9,8 @@ export const navItems: NavItem[] = [
     link: "/",
   },
   {
-    name: "Doctor Schedules",
-    link: "/doctor-schedule",
+    name: "Doctors",
+    link: "/doctors",
   },
   {
     name: "Services",
