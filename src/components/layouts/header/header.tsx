@@ -21,7 +21,7 @@ function Header() {
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
-          <a href="#" className="relative z-20 mr-4 flex items-center">
+          <a href="/" className="relative z-20 mr-4 flex items-center">
             <Image
               src="/logo.svg"
               alt="Logo"
