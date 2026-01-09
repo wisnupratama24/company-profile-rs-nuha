@@ -10,7 +10,7 @@ import { SearchSection } from "./components/search-section";
 import { DoctorListView } from "./components/doctor-list-view";
 import { DoctorScheduleView } from "./components/doctor-schedule-view";
 import { getAvailableSlotsCount, hasActiveFilters } from "./utils/helpers";
-import { useDoctors, useBookAppointment } from "./hooks/use-doctors";
+import { useDoctors } from "./hooks/use-doctors";
 
 function DoctorSchedule() {
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
@@ -27,24 +27,30 @@ function DoctorSchedule() {
   const [showAllDoctors, setShowAllDoctors] = useState(false);
   const [showAllDepartments, setShowAllDepartments] = useState(true);
 
-  // API: Fetch doctors with filters
+  // API: Fetch all doctors (without department filter) to get all departments
+  const { data: allDoctors = [], isLoading: isLoadingAllDoctors } = useDoctors({
+    search: searchDoctor.trim() || undefined,
+    date: searchDate ? format(searchDate, "yyyy-MM-dd") : undefined,
+  });
+
+  // API: Fetch doctors with filters (including department)
   const { data: doctors = [], isLoading, error } = useDoctors({
     department: selectedDepartment || undefined,
     search: searchDoctor.trim() || undefined,
     date: searchDate ? format(searchDate, "yyyy-MM-dd") : undefined,
   });
 
-  // Booking mutation
-  const bookAppointmentMutation = useBookAppointment();
+  // Combined loading state
+  const isContentLoading = isLoading || isLoadingAllDoctors;
 
-  // Get unique departments/specializations
+  // Get unique departments/specializations from ALL doctors (not filtered)
   const departments = useMemo(() => {
     const deptSet = new Set<string>();
-    doctors.forEach((doctor) => {
+    allDoctors.forEach((doctor) => {
       deptSet.add(doctor.doctor.specialization);
     });
     return Array.from(deptSet).sort();
-  }, [doctors]);
+  }, [allDoctors]);
 
   // Department stats for overview
   const departmentStats = useMemo(() => {
@@ -115,37 +121,6 @@ function DoctorSchedule() {
     }
   }, [selectedDepartment, searchDoctor, searchDate, resetFilterStates]);
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="max-w-7xl w-full flex items-center justify-center min-h-[800px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading doctors...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="max-w-7xl w-full flex items-center justify-center min-h-[800px]">
-        <div className="text-center">
-          <p className="text-destructive mb-4">
-            {error instanceof Error ? error.message : "Failed to load doctors"}
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-7xl w-full">
       <div className="mb-8">
@@ -154,7 +129,7 @@ function DoctorSchedule() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl font-bold tracking-tight mb-2"
         >
-          Doctor Schedule
+          Jadwal Dokter
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: -10 }}
@@ -162,7 +137,7 @@ function DoctorSchedule() {
           transition={{ delay: 0.1 }}
           className="text-muted-foreground mb-6"
         >
-          View and book appointments with our medical professionals
+          Lihat dan pesan janji temu dengan tenaga medis profesional kami
         </motion.p>
 
         {/* Search Section */}
@@ -189,9 +164,9 @@ function DoctorSchedule() {
           transition={{ delay: 0.2 }}
           className="flex flex-col lg:sticky lg:top-24 lg:self-start gap-4"
         >
-          {/* Department Filter */}
+          {/* Department Filter - Always visible */}
           <FilterSection
-            title="Department"
+            title="Departemen"
             icon={<Filter className="h-4 w-4" />}
             items={departmentItems}
             selectedId={selectedDepartment}
@@ -207,7 +182,7 @@ function DoctorSchedule() {
                 resetFilterStates();
               }
             }}
-            allLabel="All Departments"
+            allLabel="Semua Departemen"
             isOpen={isDepartmentOpen}
             onOpenChange={setIsDepartmentOpen}
             showAllButton={true}
@@ -216,9 +191,9 @@ function DoctorSchedule() {
             }
           />
 
-          {/* Doctors List */}
+          {/* Doctors List - Card always visible, loading inside */}
           <FilterSection
-            title="Doctors"
+            title="Dokter"
             items={doctorItems}
             selectedId={selectedDoctor?.doctor.id || null}
             onSelect={(id) => {
@@ -240,7 +215,7 @@ function DoctorSchedule() {
                 }
               }
             }}
-            allLabel="All Doctors"
+            allLabel="Semua Dokter"
             isOpen={isDoctorsOpen}
             onOpenChange={setIsDoctorsOpen}
             count={
@@ -249,7 +224,7 @@ function DoctorSchedule() {
                 : undefined
             }
             subtitle={
-              searchDoctor || searchDate ? "Filtered by search" : undefined
+              searchDoctor || searchDate ? "Difilter berdasarkan pencarian" : undefined
             }
             showAllButton={true}
             isAllActive={
@@ -259,6 +234,7 @@ function DoctorSchedule() {
               !searchDoctor &&
               !searchDate
             }
+            isLoading={isLoading}
           />
         </motion.div>
 
@@ -269,63 +245,56 @@ function DoctorSchedule() {
           transition={{ delay: 0.3 }}
           className="flex flex-col"
         >
-          <AnimatePresence mode="wait">
-            {!selectedDoctor ? (
-              <DoctorListView
-                selectedDepartment={selectedDepartment}
-                searchDoctor={searchDoctor}
-                searchDate={searchDate}
-                showAllDoctors={showAllDoctors}
-                filteredDoctors={filteredDoctors}
-                departmentStats={departmentStats}
-                onDoctorSelect={(doctor) => {
-                  resetFilterStates();
-                  setSelectedDepartment(null);
-                  setSelectedDoctor(doctor);
-                  setSelectedDay(0);
-                }}
-                onDepartmentSelect={setSelectedDepartment}
-              />
-            ) : (
-              <DoctorScheduleView
-                doctor={selectedDoctor}
-                selectedDay={selectedDay}
-                onDaySelect={setSelectedDay}
-                onSlotClick={async (slotTime, day) => {
-                  if (!selectedDoctor) return;
-
-                  const date = selectedDoctor.schedule[selectedDay]?.date;
-                  if (!date) return;
-
-                  // For now, show a prompt for patient info
-                  // You can replace this with a proper form/modal
-                  const patientName = prompt("Enter your name:");
-                  const patientEmail = prompt("Enter your email:");
-                  const patientPhone = prompt("Enter your phone:");
-
-                  if (patientName && patientEmail && patientPhone) {
-                    try {
-                      await bookAppointmentMutation.mutateAsync({
-                        doctorId: selectedDoctor.doctor.id,
-                        date,
-                        time: slotTime,
-                        patientName,
-                        patientEmail,
-                        patientPhone,
-                      });
-                      alert("Appointment booked successfully!");
-                    } catch (error) {
-                      alert(
-                        `Failed to book appointment: ${
-                          error instanceof Error ? error.message : "Unknown error"
-                        }`
-                      );
-                    }
-                  }
-                }}
-              />
-            )}
-          </AnimatePresence>
+          {error ? (
+            /* Error state - only in right content area */
+            <div className="flex items-center justify-center min-h-[600px]">
+              <div className="text-center">
+                <p className="text-destructive mb-4">
+                  {error instanceof Error ? error.message : "Gagal memuat dokter"}
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                >
+                  Coba Lagi
+                </button>
+              </div>
+            </div>
+          ) : isContentLoading ? (
+            /* Loading state - only in right content area */
+            <div className="flex items-center justify-center min-h-[600px]">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Memuat dokter...</p>
+              </div>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              {!selectedDoctor ? (
+                <DoctorListView
+                  selectedDepartment={selectedDepartment}
+                  searchDoctor={searchDoctor}
+                  searchDate={searchDate}
+                  showAllDoctors={showAllDoctors}
+                  filteredDoctors={filteredDoctors}
+                  departmentStats={departmentStats}
+                  onDoctorSelect={(doctor) => {
+                    resetFilterStates();
+                    setSelectedDepartment(null);
+                    setSelectedDoctor(doctor);
+                    setSelectedDay(0);
+                  }}
+                  onDepartmentSelect={setSelectedDepartment}
+                />
+              ) : (
+                <DoctorScheduleView
+                  doctor={selectedDoctor}
+                  selectedDay={selectedDay}
+                  onDaySelect={setSelectedDay}
+                />
+              )}
+            </AnimatePresence>
+          )}
         </motion.div>
       </div>
     </div>

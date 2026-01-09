@@ -10,35 +10,39 @@ export interface FooterLinkSection {
 
 export const footerLinks: FooterLinkSection[] = [
   {
-    title: "Product",
+    title: "Layanan",
     items: [
-      { name: "Features", link: "#features" },
-      { name: "Pricing", link: "#pricing" },
-      { name: "Documentation", link: "#docs" },
+      { name: "Layanan Medis", link: "/service" },
+      { name: "Dokter", link: "/doctors" },
+      { name: "Pendaftaran Online", link: "#" },
+      { name: "Informasi Kamar", link: "#" },
     ],
   },
   {
-    title: "Company",
+    title: "Informasi",
     items: [
-      { name: "About", link: "#about" },
-      { name: "Blog", link: "#blog" },
-      { name: "Careers", link: "#careers" },
+      { name: "Tentang RS Nuha", link: "#" },
+      { name: "Visi & Misi", link: "#" },
+      { name: "Fasilitas", link: "#" },
+      { name: "Berita & Artikel", link: "#" },
     ],
   },
   {
-    title: "Resources",
+    title: "Kontak",
     items: [
-      { name: "Support", link: "#support" },
-      { name: "Contact", link: "#contact" },
-      { name: "Privacy", link: "#privacy" },
+      { name: "Hubungi Kami", link: "#" },
+      { name: "Lokasi", link: "#" },
+      { name: "Jam Operasional", link: "#" },
+      { name: "Darurat 24/7", link: "#" },
     ],
   },
   {
-    title: "Social",
+    title: "Ikuti Kami",
     items: [
-      { name: "Twitter", link: "#" },
-      { name: "LinkedIn", link: "#" },
-      { name: "GitHub", link: "#" },
+      { name: "Facebook", link: "#" },
+      { name: "Instagram", link: "#" },
+      { name: "YouTube", link: "#" },
+      { name: "WhatsApp", link: "#" },
     ],
   },
 ];

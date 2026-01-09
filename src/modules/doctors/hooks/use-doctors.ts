@@ -1,12 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   fetchDoctors,
   fetchDoctorById,
-  bookAppointment,
-  checkAvailability,
   FetchDoctorsParams,
-  BookAppointmentRequest,
-  AvailabilityCheckResponse,
 } from "@/services/doctors";
 import { DoctorScheduleData } from "../utils/constants";
 
@@ -33,43 +29,6 @@ export function useDoctor(id: string | null) {
     },
     enabled: !!id,
     staleTime: 60 * 1000,
-  });
-}
-
-/**
- * Hook to book an appointment
- */
-export function useBookAppointment() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: BookAppointmentRequest) => bookAppointment(data),
-    onSuccess: () => {
-      // Invalidate doctors queries to refetch updated availability
-      queryClient.invalidateQueries({ queryKey: ["doctors"] });
-      queryClient.invalidateQueries({ queryKey: ["doctor"] });
-    },
-  });
-}
-
-/**
- * Hook to check slot availability
- */
-export function useCheckAvailability(
-  doctorId: string | null,
-  date: string | null,
-  time: string | null
-) {
-  return useQuery<AvailabilityCheckResponse>({
-    queryKey: ["availability", doctorId, date, time],
-    queryFn: () => {
-      if (!doctorId || !date || !time) {
-        throw new Error("Doctor ID, date, and time are required");
-      }
-      return checkAvailability(doctorId, date, time);
-    },
-    enabled: !!(doctorId && date && time),
-    staleTime: 30 * 1000, // 30 seconds
   });
 }
 

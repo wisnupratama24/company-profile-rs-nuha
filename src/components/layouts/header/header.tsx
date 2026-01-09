@@ -32,14 +32,14 @@ function Header() {
           </a>
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <NavbarButton variant="primary">Book a call</NavbarButton>
+            <NavbarButton variant="primary">Pesan Janji</NavbarButton>
           </div>
         </NavBody>
 
         {/* Mobile Navigation */}
         <MobileNav>
           <MobileNavHeader>
-            <a href="#" className="flex items-center">
+            <a href="/" className="flex items-center">
               <Image
                 src="/logo.svg"
                 alt="Logo"
@@ -74,7 +74,7 @@ function Header() {
                 variant="primary"
                 className="w-full"
               >
-                Book a call
+                Pesan Janji
               </NavbarButton>
             </div>
           </MobileNavMenu>

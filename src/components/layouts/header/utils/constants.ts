@@ -5,15 +5,15 @@ export interface NavItem {
 
 export const navItems: NavItem[] = [
   {
-    name: "Home",
+    name: "Beranda",
     link: "/",
   },
   {
-    name: "Doctors",
+    name: "Dokter",
     link: "/doctors",
   },
   {
-    name: "Services",
+    name: "Layanan",
     link: "/service",
   },
 ];

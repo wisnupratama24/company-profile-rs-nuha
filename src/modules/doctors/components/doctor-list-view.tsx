@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { DoctorScheduleData } from "../utils/constants";
-import { DoctorCard } from "./doctor-card";
+import { DoctorScheduleView } from "./doctor-schedule-view";
 import { DepartmentCard } from "./department-card";
 import { hasActiveFilters } from "../utils/helpers";
 
@@ -25,6 +26,8 @@ interface DoctorListViewProps {
   onDepartmentSelect: (department: string) => void;
 }
 
+// onDoctorSelect is kept for backward compatibility but not used in the new design
+
 export function DoctorListView({
   selectedDepartment,
   searchDoctor,
@@ -37,6 +40,16 @@ export function DoctorListView({
 }: DoctorListViewProps) {
   const hasFilters = hasActiveFilters(selectedDepartment, searchDoctor, searchDate);
   const showDoctorsList = hasFilters || showAllDoctors;
+  
+  // State untuk menyimpan selectedDay untuk setiap doctor
+  const [selectedDays, setSelectedDays] = useState<Record<string, number>>({});
+  
+  const handleDaySelect = (doctorId: string, dayIndex: number) => {
+    setSelectedDays((prev) => ({
+      ...prev,
+      [doctorId]: dayIndex,
+    }));
+  };
 
   return (
     <motion.div
@@ -62,27 +75,27 @@ export function DoctorListView({
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 {searchDoctor && (
                   <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
-                    Name: {searchDoctor}
+                    Nama: {searchDoctor}
                   </span>
                 )}
                 {searchDate && (
                   <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
-                    Date: {format(searchDate, "PPP")}
+                    Tanggal: {format(searchDate, "PPP")}
                   </span>
                 )}
               </div>
             )}
             <h1 className="text-3xl font-bold leading-tight mb-3">
-              {showDoctorsList ? "Search Results" : "All Departments"}
+              {showDoctorsList ? "Hasil Pencarian" : "Semua Departemen"}
             </h1>
             <p className="text-base text-muted-foreground">
               {showDoctorsList
-                ? `${filteredDoctors.length} doctor${filteredDoctors.length !== 1 ? "s" : ""} found${
+                ? `${filteredDoctors.length} dokter ditemukan${
                     selectedDepartment && !searchDoctor && !searchDate
-                      ? " in this department"
+                      ? " di departemen ini"
                       : ""
-                  }${(searchDoctor || searchDate) ? " matching your search" : ""}`
-                : `${departmentStats.length} departments available`}
+                  }${(searchDoctor || searchDate) ? " sesuai pencarian Anda" : ""}`
+                : `${departmentStats.length} departemen tersedia`}
             </p>
           </div>
           <Separator />
@@ -94,16 +107,16 @@ export function DoctorListView({
             {filteredDoctors.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
-                  No doctors found matching your search criteria.
+                  Tidak ada dokter ditemukan sesuai kriteria pencarian Anda.
                 </p>
               </div>
             ) : (
               filteredDoctors.map((doctor, index) => (
-                <DoctorCard
+                <DoctorScheduleView
                   key={doctor.doctor.id}
                   doctor={doctor}
-                  index={index}
-                  onClick={() => onDoctorSelect(doctor)}
+                  selectedDay={selectedDays[doctor.doctor.id] ?? 0}
+                  onDaySelect={(dayIndex) => handleDaySelect(doctor.doctor.id, dayIndex)}
                 />
               ))
             )}

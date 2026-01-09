@@ -31,22 +31,22 @@ export function SearchSection({
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="border-2 rounded-lg p-4 bg-card"
+      className="border-2 rounded-lg p-4 bg-white"
     >
       <div className="flex items-center gap-2 mb-4">
         <Search className="h-4 w-4 text-muted-foreground" />
-        <h3 className="text-sm font-semibold">Search</h3>
+        <h3 className="text-sm font-semibold">Cari</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Search by Doctor Name */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-muted-foreground">
-            Search by Doctor Name
+            Cari berdasarkan Nama Dokter
           </label>
           <div className="relative">
             <Input
               type="text"
-              placeholder="e.g., Dr. Sarah Johnson"
+              placeholder="contoh: Dr. Sarah Johnson"
               value={searchDoctor}
               onChange={(e) => onSearchDoctorChange(e.target.value)}
               className="pr-8"
@@ -65,7 +65,7 @@ export function SearchSection({
         {/* Search by Date */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-muted-foreground">
-            Search by Date
+            Cari berdasarkan Tanggal
           </label>
           <Popover>
             <PopoverTrigger asChild>
@@ -77,7 +77,7 @@ export function SearchSection({
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {searchDate ? format(searchDate, "PPP") : <span>Pick a date</span>}
+                {searchDate ? format(searchDate, "PPP") : <span>Pilih tanggal</span>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -96,7 +96,7 @@ export function SearchSection({
                     className="w-full text-xs"
                   >
                     <X className="mr-2 h-3 w-3" />
-                    Clear date
+                    Hapus tanggal
                   </Button>
                 </div>
               )}
@@ -113,7 +113,7 @@ export function SearchSection({
             className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
             <X className="h-3 w-3" />
-            Clear all searches
+            Hapus semua pencarian
           </button>
         </div>
       )}

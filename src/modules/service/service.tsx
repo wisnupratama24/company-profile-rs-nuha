@@ -21,7 +21,7 @@ function Service() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl font-bold tracking-tight mb-2"
         >
-          Medical Services
+          Layanan Medis
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: -10 }}
@@ -29,7 +29,7 @@ function Service() {
           transition={{ delay: 0.1 }}
           className="text-muted-foreground"
         >
-          Explore our comprehensive range of medical services and specialized care options
+          Jelajahi berbagai layanan medis komprehensif dan pilihan perawatan khusus kami
         </motion.p>
       </div>
 
@@ -41,9 +41,9 @@ function Service() {
           transition={{ delay: 0.2 }}
           className="flex flex-col lg:sticky lg:top-24 lg:self-start"
         >
-          <div className="flex flex-col border-2 rounded-lg overflow-hidden bg-card">
+          <div className="flex flex-col border-2 rounded-lg overflow-hidden bg-white">
             <div className="px-4 py-3 border-b">
-              <h2 className="text-sm font-semibold">Services</h2>
+              <h2 className="text-sm font-semibold">Layanan</h2>
             </div>
             <div className="flex-1 overflow-y-auto max-h-[calc(100vh-200px)]">
               <div className="p-2 space-y-1">
@@ -128,7 +128,7 @@ function Service() {
                             <p className="font-medium text-foreground">
                               {selectedService.department}
                             </p>
-                            <p className="text-xs">Department</p>
+                            <p className="text-xs">Departemen</p>
                           </div>
                         </div>
                         <Separator orientation="vertical" className="h-10" />

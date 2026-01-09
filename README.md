@@ -1,42 +1,46 @@
-# Company Profile RS Nuha - Step-by-Step Tutorial Guide
+# Company Profile RS Nuha - Panduan Tutorial Langkah Demi Langkah
 
-> **For Teachers & Speakers:** This guide is designed to help you teach students how to build a modern Next.js company profile website from scratch. Follow the steps in order, and explain each concept as you go.
+> **Untuk Pengajar & Pembicara:** Panduan ini dirancang untuk membantu Anda mengajarkan siswa cara membangun website company profile Next.js modern dari awal. Ikuti langkah-langkah secara berurutan, dan jelaskan setiap konsep saat Anda melangkah.
 
-This is a [Next.js](https://nextjs.org) project for building a company profile website for RS Nuha, featuring a doctors schedule module and service pages.
+Ini adalah proyek [Next.js](https://nextjs.org) untuk membangun website company profile RS Nuha, yang menampilkan modul jadwal dokter dan halaman layanan.
 
----
+## 🚀 Status Saat Ini
 
-## 📚 Table of Contents
-
-1. [Prerequisites & Setup](#prerequisites--setup)
-2. [Step 1: Project Initialization](#step-1-project-initialization)
-3. [Step 2: Installing Dependencies](#step-2-installing-dependencies)
-4. [Step 3: Project Structure Setup](#step-3-project-structure-setup)
-5. [Step 4: Configuration Files](#step-4-configuration-files)
-6. [Step 5: Building the Foundation - Layout & Core Components](#step-5-building-the-foundation---layout--core-components)
-7. [Step 6: API Integration Setup](#step-6-api-integration-setup)
-8. [Step 7: Building UI Components](#step-7-building-ui-components)
-9. [Step 8: Creating Pages](#step-8-creating-pages)
-10. [Step 9: Building Feature Modules](#step-9-building-feature-modules)
-11. [Key Technologies Reference](#key-technologies-reference)
-12. [Common Issues & Solutions](#common-issues--solutions)
+Proyek ini saat ini menggunakan **dummy data** untuk keperluan pengembangan dan demonstrasi. Service dokter (`src/services/doctors.ts`) menghasilkan jadwal dinamis berdasarkan tanggal saat ini, memungkinkan Anda untuk menguji aplikasi tanpa backend API. Ketika backend API siap, Anda dapat dengan mudah mengganti logika dummy data dengan panggilan API aktual menggunakan `apiClient` yang telah dikonfigurasi.
 
 ---
 
-## Prerequisites & Setup
+## 📚 Daftar Isi
 
-### What Students Need to Know
+1. [Prasyarat & Setup](#prasyarat--setup)
+2. [Langkah 1: Inisialisasi Proyek](#langkah-1-inisialisasi-proyek)
+3. [Langkah 2: Instalasi Dependencies](#langkah-2-instalasi-dependencies)
+4. [Langkah 3: Setup Struktur Proyek](#langkah-3-setup-struktur-proyek)
+5. [Langkah 4: File Konfigurasi](#langkah-4-file-konfigurasi)
+6. [Langkah 5: Membangun Fondasi - Layout & Komponen Inti](#langkah-5-membangun-fondasi---layout--komponen-inti)
+7. [Langkah 6: Setup Integrasi API](#langkah-6-setup-integrasi-api)
+8. [Langkah 7: Membangun Komponen UI](#langkah-7-membangun-komponen-ui)
+9. [Langkah 8: Membuat Halaman](#langkah-8-membuat-halaman)
+10. [Langkah 9: Membangun Modul Fitur](#langkah-9-membangun-modul-fitur)
+11. [Referensi Teknologi Utama](#referensi-teknologi-utama)
+12. [Masalah Umum & Solusi](#masalah-umum--solusi)
 
-Before starting, ensure your audience understands:
-- **HTML, CSS, JavaScript** basics
-- **React fundamentals** (components, props, hooks)
-- **TypeScript basics** (types, interfaces)
-- **RESTful APIs** concepts
-- **Git** basics (optional but recommended)
+---
 
-### Required Software Installation
+## Prasyarat & Setup
 
-**1. Node.js (v18 or higher)**
+### Yang Perlu Diketahui Siswa
+
+Sebelum memulai, pastikan audiens Anda memahami:
+- Dasar-dasar **HTML, CSS, JavaScript**
+- **Fundamental React** (komponen, props, hooks)
+- Dasar-dasar **TypeScript** (types, interfaces)
+- Konsep **RESTful APIs**
+- Dasar-dasar **Git** (opsional tapi direkomendasikan)
+
+### Instalasi Software yang Diperlukan
+
+**1. Node.js (v18 atau lebih tinggi)**
 ```bash
 # Download from https://nodejs.org/
 # Verify installation:
@@ -45,14 +49,14 @@ npm --version
 ```
 
 **2. Code Editor**
-- Recommended: [Visual Studio Code](https://code.visualstudio.com/)
-- Essential Extensions:
+- Direkomendasikan: [Visual Studio Code](https://code.visualstudio.com/)
+- Ekstensi Penting:
   - ESLint
   - Prettier
   - Tailwind CSS IntelliSense
   - TypeScript and JavaScript Language Features
 
-**3. Git (Optional)**
+**3. Git (Opsional)**
 ```bash
 # Download from https://git-scm.com/
 git --version
@@ -60,38 +64,38 @@ git --version
 
 ---
 
-## Step 1: Project Initialization
+## Langkah 1: Inisialisasi Proyek
 
-### 🎯 Learning Objective
-Students will learn how to initialize a Next.js project with TypeScript and understand the generated structure.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar cara menginisialisasi proyek Next.js dengan TypeScript dan memahami struktur yang dihasilkan.
 
-### Instructions
+### Instruksi
 
-**1.1 Create the Project**
+**1.1 Membuat Proyek**
 
-Open terminal and run:
+Buka terminal dan jalankan:
 
 ```bash
 npx create-next-app@latest company-profile-rs-nuha
 ```
 
-**When prompted, select these options:**
-- ✓ **TypeScript:** Yes
-- ✓ **ESLint:** Yes
-- ✓ **Tailwind CSS:** Yes
-- ✓ **App Router:** Yes (this is the default)
-- ✓ **src/ directory:** Yes
+**Saat diminta, pilih opsi berikut:**
+- ✓ **TypeScript:** Ya
+- ✓ **ESLint:** Ya
+- ✓ **Tailwind CSS:** Ya
+- ✓ **App Router:** Ya (ini adalah default)
+- ✓ **src/ directory:** Ya
 - ✓ **Import alias:** `@/*` (default)
 
-**1.2 Navigate to Project**
+**1.2 Masuk ke Direktori Proyek**
 
 ```bash
 cd company-profile-rs-nuha
 ```
 
-**1.3 Verify Initial Structure**
+**1.3 Verifikasi Struktur Awal**
 
-Your project should now have:
+Proyek Anda sekarang seharusnya memiliki:
 ```
 company-profile-rs-nuha/
 ├── src/
@@ -107,81 +111,85 @@ company-profile-rs-nuha/
 └── tailwind.config.ts
 ```
 
-**1.4 Test the Initial Setup**
+**1.4 Uji Setup Awal**
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) - you should see the default Next.js page.
+Buka [http://localhost:3000](http://localhost:3000) - Anda seharusnya melihat halaman default Next.js.
 
-> **Teaching Tip:** Explain that `layout.tsx` wraps all pages, `page.tsx` is the homepage, and `globals.css` contains global styles.
+> **Tips Mengajar:** Jelaskan bahwa `layout.tsx` membungkus semua halaman, `page.tsx` adalah halaman beranda, dan `globals.css` berisi style global.
 
 ---
 
-## Step 2: Installing Dependencies
+## Langkah 2: Instalasi Dependencies
 
-### 🎯 Learning Objective
-Students will understand what dependencies are needed and why each one is important.
+### 🎯 Tujuan Pembelajaran
+Siswa akan memahami dependencies apa yang diperlukan dan mengapa masing-masing penting.
 
-### Instructions
+### Instruksi
 
-**2.1 Install Core Dependencies**
+**2.1 Instalasi Dependencies Inti**
 
-Run these commands one by one, explaining what each package does:
+Jalankan perintah-perintah ini satu per satu, jelaskan apa yang dilakukan setiap package:
 
 ```bash
-# Data fetching and state management
+# Data fetching dan state management
 npm install @tanstack/react-query @tanstack/react-query-devtools
-# Explain: React Query helps manage server state, caching, and data fetching
+# Jelaskan: React Query membantu mengelola server state, caching, dan data fetching
 
-# HTTP client for API calls
+# HTTP client untuk panggilan API
 npm install axios
-# Explain: Axios makes it easier to make HTTP requests
+# Jelaskan: Axios memudahkan membuat HTTP requests
 
-# UI Component libraries (Radix UI - accessible primitives)
+# Library komponen UI (Radix UI - primitives yang accessible)
 npm install @radix-ui/react-select @radix-ui/react-popover @radix-ui/react-scroll-area @radix-ui/react-collapsible @radix-ui/react-separator @radix-ui/react-slot
-# Explain: These provide accessible, unstyled UI primitives
+# Jelaskan: Ini menyediakan UI primitives yang accessible dan tanpa style
 
-# Icons
+# Ikon
 npm install @tabler/icons-react lucide-react
-# Explain: Icon libraries for UI elements
+# Jelaskan: Library ikon untuk elemen UI
 
 # Utilities
 npm install clsx tailwind-merge class-variance-authority
-# Explain: Utilities for managing CSS classes
+# Jelaskan: Utilities untuk mengelola CSS classes
 
-# Date handling and markdown
+# Penanganan tanggal dan markdown
 npm install date-fns react-day-picker react-markdown
-# Explain: Date manipulation and markdown rendering
+# Jelaskan: Manipulasi tanggal dan rendering markdown
 
-# Animation
+# Animasi
 npm install motion aceternity-ui
-# Explain: Animation libraries for smooth UI transitions
+# Jelaskan: Library animasi untuk transisi UI yang halus
+
+# Utilities tambahan (dev dependencies)
+npm install --save-dev tw-animate-css babel-plugin-react-compiler
+# Jelaskan: Utilities animasi dan React compiler untuk optimasi
 ```
 
-**2.2 Verify Installation**
+**2.2 Verifikasi Instalasi**
 
 ```bash
 npm list --depth=0
 ```
 
-Check that all packages appear in the list.
+Periksa bahwa semua package muncul dalam daftar.
 
-> **Teaching Tip:** Show students the `package.json` file to see how dependencies are tracked. Explain the difference between `dependencies` and `devDependencies`.
+> **Tips Mengajar:** Tunjukkan kepada siswa file `package.json` untuk melihat bagaimana dependencies dilacak. Jelaskan perbedaan antara `dependencies` dan `devDependencies`.
 
 ---
 
-## Step 3: Project Structure Setup
+## Langkah 3: Setup Struktur Proyek
 
-### 🎯 Learning Objective
-Students will learn how to organize a Next.js project with a scalable folder structure.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar cara mengorganisir proyek Next.js dengan struktur folder yang dapat diskalakan.
 
-### Instructions
+### Instruksi
 
-**3.1 Create the Folder Structure**
+**3.1 Membuat Struktur Folder**
 
-Create these directories in `src/`:
+Buat direktori-direktori berikut di `src/`:
 
 ```bash
 # In your terminal, or create manually in VS Code:
@@ -199,7 +207,7 @@ mkdir -p src/modules/service/utils
 mkdir -p src/services
 ```
 
-**3.2 Explain the Structure**
+**3.2 Penjelasan Struktur**
 
 ```
 src/
@@ -217,20 +225,20 @@ src/
 └── services/              # API service functions
 ```
 
-> **Teaching Tip:** Explain that this structure follows the "feature-based" organization pattern, making it easier to find and maintain code.
+> **Tips Mengajar:** Jelaskan bahwa struktur ini mengikuti pola organisasi "feature-based", membuat lebih mudah untuk menemukan dan memelihara kode.
 
 ---
 
-## Step 4: Configuration Files
+## Langkah 4: File Konfigurasi
 
-### 🎯 Learning Objective
-Students will learn how to configure environment variables and API settings.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar cara mengonfigurasi environment variables dan pengaturan API.
 
-### Instructions
+### Instruksi
 
-**4.1 Create Environment Variables File**
+**4.1 Membuat File Environment Variables**
 
-Create `.env.local` in the root directory:
+Buat `.env.local` di direktori root:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
@@ -238,9 +246,11 @@ NEXT_PUBLIC_ENV=development
 NEXT_PUBLIC_AUTH_API_URL=http://localhost:3000/api/auth
 ```
 
-> **Important:** Add `.env.local` to `.gitignore` to keep secrets safe!
+> **Penting:** Tambahkan `.env.local` ke `.gitignore` untuk menjaga keamanan rahasia!
 
-**4.2 Create Config File**
+**4.2 Membuat File Config (Opsional)**
+
+Proyek ini menyertakan file config, tetapi API client saat ini menggunakan environment variables secara langsung. Anda dapat membuat `src/config/config.ts` untuk konfigurasi terpusat:
 
 Create `src/config/config.ts`:
 
@@ -262,28 +272,33 @@ Create `src/config/index.ts`:
 export * from './config';
 ```
 
-> **Teaching Tip:** Explain why we centralize configuration - it makes it easier to change settings and prevents typos.
+> **Tips Mengajar:** 
+> - Jelaskan mengapa kita memusatkan konfigurasi - ini memudahkan mengubah pengaturan dan mencegah kesalahan ketik
+> - Catatan: `apiClient` saat ini menggunakan environment variables secara langsung, yang juga merupakan pendekatan yang valid
+> - Anda dapat merefaktor API client untuk menggunakan objek config jika Anda lebih suka konfigurasi terpusat
 
 ---
 
-## Step 5: Building the Foundation - Layout & Core Components
+## Langkah 5: Membangun Fondasi - Layout & Komponen Inti
 
-### 🎯 Learning Objective
-Students will learn to build the application foundation: API client, React Query setup, and root layout. **This is the first thing to build!**
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar membangun fondasi aplikasi: API client, setup React Query, dan root layout. **Ini adalah hal pertama yang harus dibangun!**
 
-### Instructions
+### Instruksi
 
-**5.1 Create API Client (Foundation for Data Fetching)**
+**5.1 Membuat API Client (Fondasi untuk Data Fetching)**
 
 Create `src/api/client.ts`:
 
 ```typescript
 import axios, { AxiosInstance, AxiosError } from "axios";
-import { c } from "@/config";
+
+// API Base URL - Change this to your actual API endpoint
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
 // Create axios instance with default config
 export const apiClient: AxiosInstance = axios.create({
-  baseURL: c.CONFIG.BASE_API_URL || "http://localhost:3000/api",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -351,9 +366,9 @@ Create `src/api/index.ts`:
 export * from './client';
 ```
 
-> **Teaching Tip:** Explain interceptors - they're like middleware that run before/after requests. Great for adding auth tokens or handling errors globally.
+> **Tips Mengajar:** Jelaskan interceptors - mereka seperti middleware yang berjalan sebelum/sesudah request. Bagus untuk menambahkan auth tokens atau menangani error secara global.
 
-**5.2 Set Up React Query Provider**
+**5.2 Setup React Query Provider**
 
 Create `src/lib/react-query.tsx`:
 
@@ -391,9 +406,9 @@ export function ReactQueryProvider({
 }
 ```
 
-> **Teaching Tip:** Explain that `"use client"` is needed because React Query uses hooks (client-side only). The QueryClient manages caching and data fetching.
+> **Tips Mengajar:** Jelaskan bahwa `"use client"` diperlukan karena React Query menggunakan hooks (hanya client-side). QueryClient mengelola caching dan data fetching.
 
-**5.3 Create Utility Functions**
+**5.3 Membuat Fungsi Utility**
 
 Create `src/lib/utils.ts`:
 
@@ -413,9 +428,9 @@ export * from './utils';
 export * from './react-query';
 ```
 
-> **Teaching Tip:** The `cn` function combines `clsx` and `tailwind-merge` to merge Tailwind classes properly, preventing conflicts.
+> **Tips Mengajar:** Fungsi `cn` menggabungkan `clsx` dan `tailwind-merge` untuk menggabungkan class Tailwind dengan benar, mencegah konflik.
 
-**5.4 Update Root Layout**
+**5.4 Memperbarui Root Layout**
 
 Update `src/app/layout.tsx`:
 
@@ -437,8 +452,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "RS Nuha - Company Profile",
-  description: "Company profile website for RS Nuha",
+  description: "Company profile website for RS Nuha featuring doctors schedule and services",
 };
+```
+
+Catatan: File `src/app/layout.tsx` yang sebenarnya mungkin memiliki metadata default yang harus diperbarui agar sesuai dengan branding Anda.
 
 export default function RootLayout({
   children,
@@ -459,9 +477,9 @@ export default function RootLayout({
 }
 ```
 
-> **Teaching Tip:** Explain that the root layout wraps ALL pages. We wrap everything in ReactQueryProvider so all pages can use React Query hooks.
+> **Tips Mengajar:** Jelaskan bahwa root layout membungkus SEMUA halaman. Kita membungkus semuanya dalam ReactQueryProvider agar semua halaman dapat menggunakan React Query hooks.
 
-**5.5 Create Basic Layout Component**
+**5.5 Membuat Komponen Layout Dasar**
 
 Create `src/components/layouts/layout.tsx`:
 
@@ -518,54 +536,160 @@ export default function RootLayout({
 }
 ```
 
-> **Teaching Tip:** This is the foundation! Now we have:
-> - API client ready
-> - React Query set up
-> - Basic layout structure
+> **Tips Mengajar:** Ini adalah fondasinya! Sekarang kita memiliki:
+> - API client siap
+> - React Query sudah disetup
+> - Struktur layout dasar
 > 
-> Next, we'll build UI components, then pages, then features.
+> Selanjutnya, kita akan membangun komponen UI, lalu halaman, lalu fitur.
 
 ---
 
-## Step 6: API Integration Setup
+## Langkah 6: Setup Integrasi API
 
-### 🎯 Learning Objective
-Students will learn how to create service functions that interact with the API.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar cara membuat fungsi service yang berinteraksi dengan API. **Catatan:** Implementasi saat ini menggunakan dummy data untuk keperluan pengembangan sampai backend API siap.
 
-### Instructions
+### Instruksi
 
-**6.1 Create Service Functions**
+**6.1 Membuat Fungsi Service**
 
 Create `src/services/doctors.ts`:
 
 ```typescript
 import { apiClient } from "@/api/client";
+import { DoctorScheduleData, doctors as dummyDoctors } from "@/modules/doctors/utils/constants";
+import { format, addDays, startOfDay } from "date-fns";
 
-// Define types for better TypeScript support
-export interface Doctor {
-  id: string;
-  name: string;
-  specialization: string;
-  department: string;
-  schedule: Schedule[];
+export interface FetchDoctorsParams {
+  department?: string;
+  search?: string;
+  date?: string;
 }
 
-export interface Schedule {
-  day: string;
-  time: string;
+/**
+ * Menghasilkan tanggal dinamis untuk 5 hari ke depan
+ */
+function generateDynamicDates(): { date: string; day: string }[] {
+  const today = startOfDay(new Date());
+  const daysOfWeek = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  
+  return Array.from({ length: 5 }, (_, i) => {
+    const date = addDays(today, i);
+    const dayName = daysOfWeek[date.getDay()];
+    return {
+      date: format(date, "yyyy-MM-dd"),
+      day: dayName,
+    };
+  });
 }
 
-// Service function to fetch doctors
-export const getDoctors = async (): Promise<Doctor[]> => {
-  const response = await apiClient.get("/doctors");
-  return response.data;
-};
+/**
+ * Memfilter dokter berdasarkan params
+ */
+function filterDoctors(
+  doctors: DoctorScheduleData[],
+  params?: FetchDoctorsParams
+): DoctorScheduleData[] {
+  let filtered = [...doctors];
 
-// Service function to fetch a single doctor
-export const getDoctorById = async (id: string): Promise<Doctor> => {
-  const response = await apiClient.get(`/doctors/${id}`);
-  return response.data;
-};
+  // Filter berdasarkan departemen
+  if (params?.department) {
+    filtered = filtered.filter(
+      (d) => d.doctor.specialization.toLowerCase() === params.department!.toLowerCase()
+    );
+  }
+
+  // Filter berdasarkan pencarian (nama)
+  if (params?.search) {
+    const searchLower = params.search.toLowerCase();
+    filtered = filtered.filter((d) =>
+      d.doctor.name.toLowerCase().includes(searchLower)
+    );
+  }
+
+  // Filter berdasarkan tanggal
+  if (params?.date) {
+    filtered = filtered.map((doctor) => {
+      const matchingSchedule = doctor.schedule.find(
+        (day) => day.date === params.date
+      );
+      if (matchingSchedule) {
+        return {
+          ...doctor,
+          schedule: [matchingSchedule],
+        };
+      }
+      return {
+        ...doctor,
+        schedule: [],
+      };
+    }).filter((doctor) => doctor.schedule.length > 0);
+  }
+
+  return filtered;
+}
+
+/**
+ * Mengambil semua dokter beserta jadwalnya
+ * Mendukung filtering berdasarkan departemen, pencarian, dan tanggal
+ * Menggunakan dummy data sampai API siap
+ */
+export async function fetchDoctors(
+  params?: FetchDoctorsParams
+): Promise<DoctorScheduleData[]> {
+  // Simulasi delay API
+  await new Promise((resolve) => setTimeout(resolve, 300));
+
+  // Transform dummy data dengan tanggal dinamis
+  const dynamicDates = generateDynamicDates();
+  const doctors = dummyDoctors.map((doctorData) => {
+    const originalSchedule = doctorData.schedule;
+    const newSchedule = dynamicDates.map((dateInfo, index) => {
+      const originalDay = originalSchedule[index % originalSchedule.length];
+      return {
+        date: dateInfo.date,
+        day: dateInfo.day,
+        slots: originalDay.slots.map((slot, slotIndex) => ({
+          ...slot,
+          id: `${doctorData.doctor.id}-${dateInfo.date}-${slotIndex}`,
+        })),
+      };
+    });
+    
+    return {
+      ...doctorData,
+      schedule: newSchedule,
+    };
+  });
+  
+  return filterDoctors(doctors, params);
+}
+
+/**
+ * Mengambil satu dokter berdasarkan ID
+ * Menggunakan dummy data sampai API siap
+ */
+export async function fetchDoctorById(
+  id: string
+): Promise<DoctorScheduleData> {
+  // Simulasi delay API
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  const dynamicDates = generateDynamicDates();
+  const doctors = dummyDoctors.map((doctorData) => {
+    // Transform dengan tanggal dinamis (logika yang sama dengan fetchDoctors)
+    // ... kode transformasi ...
+  });
+  
+  const doctor = doctors.find((d) => d.doctor.id === id);
+  
+  if (!doctor) {
+    throw new Error(`Dokter dengan ID ${id} tidak ditemukan`);
+  }
+  
+  return doctor;
+}
 ```
 
 Create `src/services/index.ts`:
@@ -574,18 +698,22 @@ Create `src/services/index.ts`:
 export * from './doctors';
 ```
 
-> **Teaching Tip:** Explain that service functions are reusable functions that make API calls. They keep API logic separate from components.
+> **Tips Mengajar:** 
+> - Jelaskan bahwa fungsi service adalah fungsi yang dapat digunakan kembali yang melakukan panggilan API
+> - Implementasi saat ini menggunakan dummy data dengan generasi tanggal dinamis untuk pengembangan
+> - Ketika backend API siap, ganti logika dummy data dengan panggilan `apiClient` yang sebenarnya
+> - Logika filtering menunjukkan cara menangani filter pencarian, departemen, dan tanggal
 
 ---
 
-## Step 7: Building UI Components
+## Langkah 7: Membangun Komponen UI
 
-### 🎯 Learning Objective
-Students will learn to build reusable UI components using Tailwind CSS and Radix UI.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar membangun komponen UI yang dapat digunakan kembali menggunakan Tailwind CSS dan Radix UI.
 
-### Instructions
+### Instruksi
 
-**7.1 Create Button Component**
+**7.1 Membuat Komponen Button**
 
 Create `src/components/ui/button.tsx`:
 
@@ -644,12 +772,12 @@ Button.displayName = "Button";
 export { Button, buttonVariants };
 ```
 
-> **Teaching Tip:** Explain:
-> - `cva` (class-variance-authority) creates variants for different button styles
-> - `forwardRef` allows parent components to access the button's DOM element
-> - `Slot` from Radix allows the button to merge props with child components
+> **Tips Mengajar:** Jelaskan:
+> - `cva` (class-variance-authority) membuat varian untuk berbagai style button
+> - `forwardRef` memungkinkan komponen parent mengakses elemen DOM button
+> - `Slot` dari Radix memungkinkan button menggabungkan props dengan komponen child
 
-**7.2 Create Card Component**
+**7.2 Membuat Komponen Card**
 
 Create `src/components/ui/card.tsx`:
 
@@ -710,28 +838,33 @@ CardContent.displayName = "CardContent";
 export { Card, CardHeader, CardTitle, CardContent };
 ```
 
-> **Teaching Tip:** Explain component composition - Card is made of smaller parts (Header, Title, Content) that work together.
+> **Tips Mengajar:** Jelaskan komposisi komponen - Card terdiri dari bagian-bagian kecil (Header, Title, Content) yang bekerja bersama.
 
-**7.3 Create Other UI Components**
+**7.3 Membuat Komponen UI Lainnya**
 
-Continue creating other UI components as needed:
+Lanjutkan membuat komponen UI lainnya sesuai kebutuhan:
 - `input.tsx` - Form input
 - `select.tsx` - Dropdown select
 - `separator.tsx` - Visual divider
-- etc.
+- `calendar.tsx` - Date picker component
+- `collapsible.tsx` - Collapsible sections
+- `popover.tsx` - Popover/dropdown menus
+- `scroll-area.tsx` - Custom scrollable areas
+- `markdown.tsx` - Markdown content renderer
+- `resizable-navbar.tsx` - Resizable navigation component
 
-> **Teaching Tip:** Build components incrementally. Start with the most commonly used ones (Button, Card), then add others as needed.
+> **Tips Mengajar:** Bangun komponen secara bertahap. Mulai dengan yang paling sering digunakan (Button, Card), lalu tambahkan yang lain sesuai kebutuhan. Banyak dari komponen ini menggunakan Radix UI primitives untuk aksesibilitas.
 
 ---
 
-## Step 8: Creating Pages
+## Langkah 8: Membuat Halaman
 
-### 🎯 Learning Objective
-Students will learn how Next.js App Router works and how to create pages.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar bagaimana Next.js App Router bekerja dan cara membuat halaman.
 
-### Instructions
+### Instruksi
 
-**8.1 Update Homepage**
+**8.1 Memperbarui Halaman Beranda**
 
 Update `src/app/page.tsx`:
 
@@ -743,9 +876,9 @@ export default function Home() {
 }
 ```
 
-**8.2 Create Doctors Page**
+**8.2 Membuat Halaman Dokter**
 
-Create `src/app/doctors/page.tsx`:
+Buat `src/app/doctors/page.tsx`:
 
 ```typescript
 import { Doctors } from "@/modules/doctors";
@@ -755,7 +888,7 @@ export default function DoctorsPage() {
 }
 ```
 
-**8.3 Create Service Page**
+**8.3 Membuat Halaman Layanan**
 
 Create `src/app/service/page.tsx`:
 
@@ -767,22 +900,22 @@ export default function ServicePage() {
 }
 ```
 
-> **Teaching Tip:** Explain that in Next.js App Router:
-> - `page.tsx` files create routes
-> - `src/app/page.tsx` = `/` (homepage)
+> **Tips Mengajar:** Jelaskan bahwa dalam Next.js App Router:
+> - File `page.tsx` membuat route
+> - `src/app/page.tsx` = `/` (halaman beranda)
 > - `src/app/doctors/page.tsx` = `/doctors`
 > - `src/app/service/page.tsx` = `/service`
 
 ---
 
-## Step 9: Building Feature Modules
+## Langkah 9: Membangun Modul Fitur
 
-### 🎯 Learning Objective
-Students will learn to organize code by features, creating reusable modules.
+### 🎯 Tujuan Pembelajaran
+Siswa akan belajar mengorganisir kode berdasarkan fitur, membuat modul yang dapat digunakan kembali.
 
-### Instructions
+### Instruksi
 
-**9.1 Create Homepage Module**
+**9.1 Membuat Modul Homepage**
 
 Create `src/modules/homepage/homepage.tsx`:
 
@@ -803,129 +936,191 @@ Create `src/modules/homepage/index.ts`:
 export * from './homepage';
 ```
 
-**9.2 Create Doctors Module**
+**9.2 Membuat Modul Dokter**
+
+Modul dokter adalah fitur komprehensif dengan kemampuan filtering, pencarian, dan melihat jadwal. Implementasi aktual (`src/modules/doctors/doctors.tsx`) mencakup:
+
+- **Manajemen State**: Pemilihan departemen, pemilihan dokter, query pencarian, filter tanggal
+- **Dual Data Fetching**: Query terpisah untuk semua dokter (untuk daftar departemen) dan dokter yang difilter
+- **Filtering Dinamis**: Filter berdasarkan departemen, istilah pencarian, dan tanggal
+- **UI Interaktif**: Bagian filter yang dapat dilipat, pencarian dengan date picker, daftar dokter dengan jadwal lengkap yang langsung ditampilkan sebagai card
+- **Tampilan Langsung**: Setiap dokter menampilkan jadwal lengkapnya (pilihan hari dan slot waktu) langsung di daftar tanpa perlu klik - setiap dokter memiliki state `selectedDay` sendiri
+- **Animasi**: Transisi halus menggunakan library Motion
 
 Create `src/modules/doctors/doctors.tsx`:
 
 ```typescript
 "use client";
 
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { useDoctors } from "./hooks/use-doctors";
-import { DoctorListView } from "./components/doctor-list-view";
 import { FilterSection } from "./components/filter-section";
 import { SearchSection } from "./components/search-section";
+import { DoctorListView } from "./components/doctor-list-view";
+import { DoctorScheduleView } from "./components/doctor-schedule-view";
+import { format } from "date-fns";
 
 export function Doctors() {
-  const { doctors, isLoading, error } = useDoctors();
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<DoctorScheduleData | null>(null);
+  const [searchDoctor, setSearchDoctor] = useState("");
+  const [searchDate, setSearchDate] = useState<Date | undefined>(undefined);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading doctors</div>;
+  // Ambil semua dokter (untuk daftar departemen)
+  const { data: allDoctors = [], isLoading: isLoadingAllDoctors } = useDoctors({
+    search: searchDoctor.trim() || undefined,
+    date: searchDate ? format(searchDate, "yyyy-MM-dd") : undefined,
+  });
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-6">Our Doctors</h1>
-      <SearchSection />
-      <FilterSection />
-      <DoctorListView doctors={doctors} />
-    </div>
-  );
+  // Ambil dokter yang difilter
+  const { data: doctors = [], isLoading, error } = useDoctors({
+    department: selectedDepartment || undefined,
+    search: searchDoctor.trim() || undefined,
+    date: searchDate ? format(searchDate, "yyyy-MM-dd") : undefined,
+  });
+
+  // Dapatkan departemen unik
+  const departments = useMemo(() => {
+    const deptSet = new Set<string>();
+    allDoctors.forEach((doctor) => {
+      deptSet.add(doctor.doctor.specialization);
+    });
+    return Array.from(deptSet).sort();
+  }, [allDoctors]);
+
+  // ... sisa logika komponen
 }
 ```
 
-Create `src/modules/doctors/index.ts`:
+Buat `src/modules/doctors/index.ts`:
 
 ```typescript
 export * from './doctors';
 ```
 
-**9.3 Create Custom Hook for Doctors**
+> **Tips Mengajar:** 
+> - Ini adalah modul yang lebih kompleks yang menunjukkan pola React lanjutan
+> - Tunjukkan bagaimana beberapa hook `useQuery` dapat bekerja bersama
+> - Jelaskan bagaimana `useMemo` mengoptimalkan perhitungan data turunan
+> - Demonstrasikan manajemen state untuk filter dan interaksi UI
+
+**9.3 Membuat Custom Hook untuk Dokter**
 
 Create `src/modules/doctors/hooks/use-doctors.ts`:
 
 ```typescript
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
-import { getDoctors, type Doctor } from "@/services/doctors";
+import {
+  fetchDoctors,
+  fetchDoctorById,
+  FetchDoctorsParams,
+} from "@/services/doctors";
+import { DoctorScheduleData } from "../utils/constants";
 
-export function useDoctors() {
-  const { data, isLoading, error } = useQuery<Doctor[]>({
-    queryKey: ["doctors"],
-    queryFn: getDoctors,
+/**
+ * Hook untuk mengambil semua dokter dengan filter opsional
+ */
+export function useDoctors(params?: FetchDoctorsParams) {
+  return useQuery<DoctorScheduleData[]>({
+    queryKey: ["doctors", params],
+    queryFn: () => fetchDoctors(params),
+    staleTime: 60 * 1000, // 1 minute
   });
+}
 
-  return {
-    doctors: data || [],
-    isLoading,
-    error,
-  };
+/**
+ * Hook untuk mengambil satu dokter berdasarkan ID
+ */
+export function useDoctor(id: string | null) {
+  return useQuery<DoctorScheduleData>({
+    queryKey: ["doctor", id],
+    queryFn: () => {
+      if (!id) throw new Error("Doctor ID is required");
+      return fetchDoctorById(id);
+    },
+    enabled: !!id,
+    staleTime: 60 * 1000,
+  });
 }
 ```
 
-> **Teaching Tip:** Explain:
-> - Custom hooks encapsulate logic
-> - React Query's `useQuery` handles loading, error, and caching automatically
-> - `queryKey` is used for caching - same key = same cached data
+> **Tips Mengajar:** Jelaskan:
+> - Custom hooks mengkapsulasi logika
+> - `useQuery` dari React Query menangani loading, error, dan caching secara otomatis
+> - `queryKey` menyertakan params untuk caching yang tepat - params berbeda = entri cache berbeda
+> - Opsi `enabled` mencegah query berjalan ketika kondisi tidak terpenuhi (misalnya, tidak ada ID)
+> - `staleTime` mengontrol berapa lama data dianggap segar sebelum refetch
 
-**9.4 Create Doctor Components**
+**9.4 Membuat Komponen Dokter**
 
-Create components like:
-- `doctor-card.tsx` - Display individual doctor
-- `doctor-list-view.tsx` - List of doctors
+Buat komponen seperti:
+- `doctor-schedule-view.tsx` - Display doctor schedule as a card (includes doctor info, day selection, and time slots)
+- `doctor-list-view.tsx` - List of doctors with their schedules displayed directly as cards
 - `filter-section.tsx` - Filtering UI
 - `search-section.tsx` - Search UI
+- `department-card.tsx` - Display department overview
 
-> **Teaching Tip:** Build components bottom-up:
-> 1. Small components first (DoctorCard)
-> 2. Then compose them (DoctorListView uses DoctorCard)
-> 3. Finally, the main module (Doctors uses all components)
+> **Tips Mengajar:** Bangun komponen dari bawah ke atas:
+> 1. Komponen kecil terlebih dahulu (DoctorScheduleView sebagai card)
+> 2. Lalu komposisikan (DoctorListView menggunakan DoctorScheduleView langsung)
+> 3. Akhirnya, modul utama (Doctors menggunakan semua komponen)
+> 
+> **Catatan Penting:** Dalam implementasi saat ini, `DoctorScheduleView` ditampilkan langsung sebagai card di dalam `DoctorListView`. User tidak perlu klik untuk melihat jadwal - jadwal lengkap (termasuk pilihan hari dan slot waktu) langsung ditampilkan untuk setiap dokter. Setiap dokter memiliki state `selectedDay` sendiri yang dikelola di `DoctorListView`.
 
-**9.5 Create Service Module**
+**9.5 Membuat Modul Layanan**
 
-Similar pattern - create `src/modules/service/service.tsx` and related components.
+Pola serupa - buat `src/modules/service/service.tsx` dan komponen terkait.
 
 ---
 
-## Key Technologies Reference
+## Referensi Teknologi Utama
 
-### Frontend Framework
-- **Next.js 16** - React framework with App Router
-- **React 19** - UI library
-- **TypeScript** - Type-safe JavaScript
+### Framework Frontend
+- **Next.js 16.1.1** - Framework React dengan App Router
+- **React 19.2.3** - Library UI dengan React Compiler
+- **TypeScript 5** - JavaScript dengan type safety
 
 ### Styling
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Radix UI** - Accessible component primitives
+- **Tailwind CSS 4** - Framework CSS utility-first (dengan PostCSS)
+- **Radix UI** - Primitives komponen yang accessible
+- **tw-animate-css** - Utilities animasi tambahan
 
 ### Data Fetching
-- **React Query (TanStack Query)** - Server state management
-- **Axios** - HTTP client
+- **React Query (TanStack Query) v5** - Manajemen server state
+- **Axios v1.13.2** - HTTP client
+
+### Animasi & UI
+- **Motion (v12)** - Library animasi untuk React
+- **Aceternity UI** - Library komponen UI
+- **Lucide React & Tabler Icons** - Library ikon
 
 ### Development Tools
-- **ESLint** - Code linting
-- **TypeScript** - Type checking
-- **React Query DevTools** - Debugging tool
+- **ESLint 9** - Linting kode (dengan konfigurasi Next.js)
+- **TypeScript** - Pengecekan tipe
+- **React Query DevTools** - Alat debugging
+- **Babel Plugin React Compiler** - Optimasi React
 
 ---
 
-## Development Workflow
+## Workflow Pengembangan
 
-### Start Development Server
+### Menjalankan Development Server
 
 ```bash
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000)
+Kunjungi [http://localhost:3000](http://localhost:3000)
 
-### Build for Production
+### Build untuk Production
 
 ```bash
 npm run build
 npm start
 ```
 
-### Run Linting
+### Menjalankan Linting
 
 ```bash
 npm run lint
@@ -933,77 +1128,93 @@ npm run lint
 
 ---
 
-## Common Issues & Solutions
+## Masalah Umum & Solusi
 
-### Issue: Module not found
-**Solution:** 
-- Check if you installed dependencies: `npm install`
-- Verify import paths match file structure
-- Check `tsconfig.json` path aliases
+### Masalah: Module tidak ditemukan
+**Solusi:** 
+- Periksa apakah Anda telah menginstal dependencies: `npm install`
+- Verifikasi path import sesuai dengan struktur file
+- Periksa path aliases di `tsconfig.json` (`@/*` harus memetakan ke `./src/*`)
 
-### Issue: Port 3000 already in use
-**Solution:** 
+### Masalah: Port 3000 sudah digunakan
+**Solusi:** 
 ```bash
 npm run dev -- -p 3001
 ```
 
-### Issue: TypeScript errors
-**Solution:** 
-- Check `tsconfig.json` configuration
-- Ensure types are properly imported
-- Restart TypeScript server in VS Code (Cmd/Ctrl + Shift + P → "TypeScript: Restart TS Server")
+### Masalah: Error TypeScript
+**Solusi:** 
+- Periksa konfigurasi `tsconfig.json`
+- Pastikan types diimpor dengan benar
+- Restart TypeScript server di VS Code (Cmd/Ctrl + Shift + P → "TypeScript: Restart TS Server")
+- Verifikasi definisi tipe React dan Next.js terinstal
 
-### Issue: Tailwind styles not applying
-**Solution:** 
-- Check `globals.css` imports Tailwind directives:
+### Masalah: Style Tailwind tidak diterapkan
+**Solusi:** 
+- Tailwind CSS 4 menggunakan PostCSS, pastikan `postcss.config.mjs` dikonfigurasi dengan benar
+- Periksa `globals.css` mengimpor direktif Tailwind:
   ```css
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+  @import "tailwindcss";
   ```
-- Verify `tailwind.config.ts` includes correct paths
+  (Catatan: Tailwind CSS 4 menggunakan `@import` bukan direktif `@tailwind`)
+- Verifikasi `@tailwindcss/postcss` terinstal
 - Restart dev server
 
-### Issue: React Query not working
-**Solution:**
-- Ensure component using React Query has `"use client"` directive
-- Check that `ReactQueryProvider` wraps your app in `layout.tsx`
-- Verify React Query DevTools shows in browser
+### Masalah: React Query tidak bekerja
+**Solusi:**
+- Pastikan komponen yang menggunakan React Query memiliki direktif `"use client"`
+- Periksa bahwa `ReactQueryProvider` membungkus aplikasi Anda di `layout.tsx`
+- Verifikasi React Query DevTools muncul di browser
+- Periksa kompatibilitas versi React Query (v5 digunakan dalam proyek ini)
+
+### Masalah: Error konfigurasi ESLint
+**Solusi:**
+- Proyek ini menggunakan ESLint 9 dengan format flat config (`eslint.config.mjs`)
+- Pastikan `eslint-config-next` terinstal
+- Jika bermigrasi dari konfigurasi ESLint lama, perbarui ke format flat config baru
+
+### Masalah: Motion/Framer Motion tidak bekerja
+**Solusi:**
+- Proyek ini menggunakan `motion` (bukan `framer-motion`), pastikan import yang benar:
+  ```typescript
+  import { motion } from "motion/react";
+  ```
+- Periksa bahwa package terinstal: `npm list motion`
 
 ---
 
-## Teaching Tips Summary
+## Ringkasan Tips Mengajar
 
-1. **Start with Foundation:** Always build API client, React Query, and layout first
-2. **Build Bottom-Up:** Create small components, then compose them
-3. **Explain "Why":** Don't just show code - explain why we structure things this way
-4. **Incremental Development:** Build one feature at a time, test as you go
-5. **Use TypeScript:** Show students how types help catch errors early
-6. **Practice Makes Perfect:** Have students recreate components from scratch
+1. **Mulai dengan Fondasi:** Selalu bangun API client, React Query, dan layout terlebih dahulu
+2. **Bangun dari Bawah ke Atas:** Buat komponen kecil, lalu komposisikan
+3. **Jelaskan "Mengapa":** Jangan hanya menunjukkan kode - jelaskan mengapa kita menyusun hal-hal dengan cara ini
+4. **Pengembangan Bertahap:** Bangun satu fitur pada satu waktu, uji saat Anda melangkah
+5. **Gunakan TypeScript:** Tunjukkan kepada siswa bagaimana types membantu menangkap error lebih awal
+6. **Latihan Membuat Sempurna:** Minta siswa membuat ulang komponen dari awal
 
 ---
 
-## Additional Resources
+## Sumber Daya Tambahan
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Query Documentation](https://tanstack.com/query/latest)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Dokumentasi Next.js](https://nextjs.org/docs)
+- [Dokumentasi React Query](https://tanstack.com/query/latest)
+- [Dokumentasi Tailwind CSS](https://tailwindcss.com/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Radix UI Documentation](https://www.radix-ui.com/)
+- [Dokumentasi Radix UI](https://www.radix-ui.com/)
 
 ---
 
-## Next Steps for Students
+## Langkah Selanjutnya untuk Siswa
 
-After completing this tutorial, students can:
+Setelah menyelesaikan tutorial ini, siswa dapat:
 
-1. Add authentication and authorization
-2. Implement form validation
-3. Add unit and integration tests
-4. Deploy to Vercel or other platforms
-5. Add more features (appointments, patient records, etc.)
-6. Optimize performance (code splitting, image optimization)
+1. Menambahkan autentikasi dan otorisasi
+2. Mengimplementasikan validasi form
+3. Menambahkan unit dan integration tests
+4. Deploy ke Vercel atau platform lainnya
+5. Menambahkan lebih banyak fitur (janji temu, catatan pasien, dll.)
+6. Mengoptimalkan performa (code splitting, optimasi gambar)
 
 ---
 
-Happy Teaching! 🎓✨
+Selamat Mengajar! 🎓✨

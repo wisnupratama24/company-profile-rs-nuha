@@ -11,374 +11,374 @@ export interface MedicalServiceData {
 export const medicalServices: MedicalServiceData[] = [
   {
     id: "1",
-    title: "General Medicine & Consultation",
-    description: "Comprehensive primary care services including routine check-ups, preventive care, and treatment of common illnesses.",
-    department: "Internal Medicine",
-    duration: "30-60 minutes",
-    category: "Primary Care",
+    title: "Kedokteran Umum & Konsultasi",
+    description: "Layanan perawatan primer komprehensif termasuk pemeriksaan rutin, perawatan pencegahan, dan pengobatan penyakit umum.",
+    department: "Penyakit Dalam",
+    duration: "30-60 menit",
+    category: "Perawatan Primer",
     content: `
-# General Medicine & Consultation
+# Kedokteran Umum & Konsultasi
 
-Our General Medicine department provides comprehensive primary care services to patients of all ages. We focus on preventive care, early diagnosis, and effective treatment of various medical conditions.
+Departemen Kedokteran Umum kami menyediakan layanan perawatan primer komprehensif untuk pasien dari segala usia. Kami fokus pada perawatan pencegahan, diagnosis dini, dan pengobatan yang efektif untuk berbagai kondisi medis.
 
-## Services Offered
+## Layanan yang Ditawarkan
 
-Our general medicine services include:
+Layanan kedokteran umum kami meliputi:
 
-### Routine Health Check-ups
-- Annual physical examinations
-- Health screenings and assessments
-- Preventive care consultations
-- Vaccination services
+### Pemeriksaan Kesehatan Rutin
+- Pemeriksaan fisik tahunan
+- Skrining dan penilaian kesehatan
+- Konsultasi perawatan pencegahan
+- Layanan vaksinasi
 
-### Diagnosis and Treatment
-- Treatment of common illnesses and infections
-- Chronic disease management
-- Medication management and prescriptions
-- Referral coordination for specialized care
+### Diagnosis dan Pengobatan
+- Pengobatan penyakit dan infeksi umum
+- Manajemen penyakit kronis
+- Manajemen obat dan resep
+- Koordinasi rujukan untuk perawatan khusus
 
-### Preventive Care
-- Health risk assessments
-- Lifestyle counseling
-- Disease prevention strategies
-- Health education and guidance
+### Perawatan Pencegahan
+- Penilaian risiko kesehatan
+- Konseling gaya hidup
+- Strategi pencegahan penyakit
+- Pendidikan dan bimbingan kesehatan
 
-## Our Approach
+## Pendekatan Kami
 
-We believe in a patient-centered approach that emphasizes:
+Kami percaya pada pendekatan yang berpusat pada pasien yang menekankan:
 
-- **Comprehensive Care**: Addressing all aspects of your health
-- **Preventive Focus**: Early detection and prevention of health issues
-- **Personalized Treatment**: Tailored care plans based on individual needs
-- **Continuous Support**: Long-term health monitoring and management
+- **Perawatan Komprehensif**: Menangani semua aspek kesehatan Anda
+- **Fokus Pencegahan**: Deteksi dini dan pencegahan masalah kesehatan
+- **Perawatan Personal**: Rencana perawatan yang disesuaikan dengan kebutuhan individu
+- **Dukungan Berkelanjutan**: Pemantauan dan manajemen kesehatan jangka panjang
 
-## When to Visit
+## Kapan Harus Berkunjung
 
-Consider scheduling an appointment for:
-- Annual wellness exams
-- New or persistent symptoms
-- Medication reviews
-- Health concerns or questions
-- Preventive care needs
+Pertimbangkan untuk menjadwalkan janji temu untuk:
+- Pemeriksaan kesehatan tahunan
+- Gejala baru atau persisten
+- Tinjauan obat
+- Kekhawatiran atau pertanyaan kesehatan
+- Kebutuhan perawatan pencegahan
 
-## Our Team
+## Tim Kami
 
-Our experienced internal medicine physicians are dedicated to providing high-quality, compassionate care to help you achieve and maintain optimal health.
+Dokter penyakit dalam berpengalaman kami berdedikasi untuk memberikan perawatan berkualitas tinggi dan penuh kasih untuk membantu Anda mencapai dan mempertahankan kesehatan optimal.
     `,
   },
   {
     id: "2",
-    title: "Mental Health & Psychiatry Services",
-    description: "Professional mental health services including counseling, therapy, and psychiatric care for various mental health conditions.",
-    department: "Psychiatry & Psychology",
-    duration: "45-60 minutes",
-    category: "Mental Health",
+    title: "Layanan Kesehatan Mental & Psikiatri",
+    description: "Layanan kesehatan mental profesional termasuk konseling, terapi, dan perawatan psikiatri untuk berbagai kondisi kesehatan mental.",
+    department: "Psikiatri & Psikologi",
+    duration: "45-60 menit",
+    category: "Kesehatan Mental",
     content: `
-# Mental Health & Psychiatry Services
+# Layanan Kesehatan Mental & Psikiatri
 
-Our Mental Health department offers comprehensive psychiatric and psychological services to support your mental well-being. We provide professional care for various mental health conditions in a supportive and confidential environment.
+Departemen Kesehatan Mental kami menawarkan layanan psikiatri dan psikologi komprehensif untuk mendukung kesejahteraan mental Anda. Kami menyediakan perawatan profesional untuk berbagai kondisi kesehatan mental dalam lingkungan yang mendukung dan rahasia.
 
-## Services Offered
+## Layanan yang Ditawarkan
 
-### Psychiatric Services
-- Mental health evaluations and assessments
-- Medication management
-- Treatment of mood disorders, anxiety, and depression
-- Psychiatric consultations
+### Layanan Psikiatri
+- Evaluasi dan penilaian kesehatan mental
+- Manajemen obat
+- Pengobatan gangguan mood, kecemasan, dan depresi
+- Konsultasi psikiatri
 
-### Psychological Services
-- Individual therapy and counseling
-- Cognitive-behavioral therapy (CBT)
-- Stress management and coping strategies
-- Support for trauma and PTSD
+### Layanan Psikologi
+- Terapi dan konseling individu
+- Terapi kognitif-perilaku (CBT)
+- Manajemen stres dan strategi mengatasi
+- Dukungan untuk trauma dan PTSD
 
-### Specialized Programs
-- Anxiety and panic disorder treatment
-- Depression management
-- Bipolar disorder care
-- Eating disorder support
-- Addiction counseling
+### Program Khusus
+- Pengobatan gangguan kecemasan dan panik
+- Manajemen depresi
+- Perawatan gangguan bipolar
+- Dukungan gangguan makan
+- Konseling kecanduan
 
-## Our Treatment Approach
+## Pendekatan Perawatan Kami
 
-We utilize evidence-based treatments tailored to each patient's unique needs:
+Kami menggunakan perawatan berbasis bukti yang disesuaikan dengan kebutuhan unik setiap pasien:
 
-- **Comprehensive Assessment**: Thorough evaluation to understand your condition
-- **Individualized Treatment**: Personalized care plans for optimal outcomes
-- **Multidisciplinary Team**: Collaboration between psychiatrists, psychologists, and therapists
-- **Continuity of Care**: Ongoing support throughout your treatment journey
+- **Penilaian Komprehensif**: Evaluasi menyeluruh untuk memahami kondisi Anda
+- **Perawatan Individual**: Rencana perawatan yang dipersonalisasi untuk hasil optimal
+- **Tim Multidisiplin**: Kolaborasi antara psikiater, psikolog, dan terapis
+- **Kontinuitas Perawatan**: Dukungan berkelanjutan sepanjang perjalanan perawatan Anda
 
-## Conditions We Treat
+## Kondisi yang Kami Tangani
 
-- Depression and mood disorders
-- Anxiety disorders and panic attacks
-- Bipolar disorder
-- PTSD and trauma-related conditions
-- Obsessive-compulsive disorder (OCD)
-- Eating disorders
-- Addiction and substance abuse
-- Attention-deficit/hyperactivity disorder (ADHD)
+- Depresi dan gangguan mood
+- Gangguan kecemasan dan serangan panik
+- Gangguan bipolar
+- PTSD dan kondisi terkait trauma
+- Gangguan obsesif-kompulsif (OCD)
+- Gangguan makan
+- Kecanduan dan penyalahgunaan zat
+- Gangguan attention-deficit/hyperactivity (ADHD)
 
-## Getting Started
+## Memulai
 
-Taking the first step toward mental health care can be challenging. Our compassionate team is here to support you throughout your journey. We provide a safe, non-judgmental environment where you can receive the care you deserve.
+Mengambil langkah pertama menuju perawatan kesehatan mental bisa menjadi tantangan. Tim penuh kasih kami siap mendukung Anda sepanjang perjalanan. Kami menyediakan lingkungan yang aman dan tidak menghakimi di mana Anda dapat menerima perawatan yang layak Anda dapatkan.
 
-## Confidentiality
+## Kerahasiaan
 
-All mental health services are provided with the highest level of confidentiality and privacy protection, in accordance with healthcare regulations and ethical standards.
+Semua layanan kesehatan mental disediakan dengan tingkat kerahasiaan dan perlindungan privasi tertinggi, sesuai dengan peraturan kesehatan dan standar etika.
     `,
   },
   {
     id: "3",
-    title: "Nutrition & Dietetics Consultation",
-    description: "Expert nutritional counseling and diet planning to support your health goals, manage medical conditions, and improve overall wellness.",
-    department: "Nutrition & Dietetics",
-    duration: "45-60 minutes",
-    category: "Wellness",
+    title: "Konsultasi Nutrisi & Diet",
+    description: "Konseling nutrisi ahli dan perencanaan diet untuk mendukung tujuan kesehatan Anda, mengelola kondisi medis, dan meningkatkan kesejahteraan secara keseluruhan.",
+    department: "Nutrisi & Diet",
+    duration: "45-60 menit",
+    category: "Kesejahteraan",
     content: `
-# Nutrition & Dietetics Consultation
+# Konsultasi Nutrisi & Diet
 
-Our Nutrition and Dietetics department provides expert nutritional guidance to help you achieve your health goals, manage medical conditions, and improve your overall well-being through evidence-based dietary interventions.
+Departemen Nutrisi dan Diet kami menyediakan panduan nutrisi ahli untuk membantu Anda mencapai tujuan kesehatan, mengelola kondisi medis, dan meningkatkan kesejahteraan secara keseluruhan melalui intervensi diet berbasis bukti.
 
-## Services Offered
+## Layanan yang Ditawarkan
 
-### Nutritional Counseling
-- Comprehensive nutritional assessments
-- Personalized meal planning
-- Weight management programs
-- Medical nutrition therapy
+### Konseling Nutrisi
+- Penilaian nutrisi komprehensif
+- Perencanaan makan yang dipersonalisasi
+- Program manajemen berat badan
+- Terapi nutrisi medis
 
-### Specialized Diet Plans
-- Diabetes meal planning
-- Heart-healthy diets
-- Renal (kidney) diet management
-- Gastrointestinal disorder nutrition
-- Food allergy and intolerance management
+### Rencana Diet Khusus
+- Perencanaan makan diabetes
+- Diet sehat jantung
+- Manajemen diet ginjal
+- Nutrisi gangguan gastrointestinal
+- Manajemen alergi dan intoleransi makanan
 
-### Health Optimization
-- Sports nutrition for athletes
-- Pediatric nutrition counseling
-- Geriatric nutrition support
-- Prenatal and postnatal nutrition
+### Optimasi Kesehatan
+- Nutrisi olahraga untuk atlet
+- Konseling nutrisi pediatrik
+- Dukungan nutrisi geriatrik
+- Nutrisi prenatal dan pascanatal
 
-## Our Approach
+## Pendekatan Kami
 
-Our registered dietitians work with you to create personalized nutrition plans:
+Ahli gizi terdaftar kami bekerja sama dengan Anda untuk membuat rencana nutrisi yang dipersonalisasi:
 
-- **Individual Assessment**: Understanding your health history, lifestyle, and goals
-- **Evidence-Based Recommendations**: Science-backed nutrition guidance
-- **Practical Solutions**: Realistic meal plans that fit your lifestyle
-- **Ongoing Support**: Regular follow-ups to track progress and adjust plans
+- **Penilaian Individual**: Memahami riwayat kesehatan, gaya hidup, dan tujuan Anda
+- **Rekomendasi Berbasis Bukti**: Panduan nutrisi berbasis sains
+- **Solusi Praktis**: Rencana makan yang realistis sesuai gaya hidup Anda
+- **Dukungan Berkelanjutan**: Tindak lanjut rutin untuk melacak kemajuan dan menyesuaikan rencana
 
-## Conditions We Support
+## Kondisi yang Kami Dukung
 
-- Diabetes (Type 1, Type 2, and gestational)
-- Cardiovascular disease
-- Kidney disease
-- Digestive disorders (IBS, Crohn's, celiac disease)
-- Food allergies and intolerances
-- Obesity and weight management
-- Eating disorders
-- High blood pressure
-- High cholesterol
+- Diabetes (Tipe 1, Tipe 2, dan gestasional)
+- Penyakit kardiovaskular
+- Penyakit ginjal
+- Gangguan pencernaan (IBS, Crohn's, penyakit celiac)
+- Alergi dan intoleransi makanan
+- Obesitas dan manajemen berat badan
+- Gangguan makan
+- Tekanan darah tinggi
+- Kolesterol tinggi
 
-## What to Expect
+## Yang Dapat Diharapkan
 
-During your consultation, our dietitian will:
+Selama konsultasi, ahli gizi kami akan:
 
-1. Review your medical history and current health status
-2. Assess your dietary habits and nutritional needs
-3. Discuss your health goals and challenges
-4. Develop a personalized nutrition plan
-5. Provide education and resources
-6. Schedule follow-up appointments as needed
+1. Meninjau riwayat medis dan status kesehatan saat ini
+2. Menilai kebiasaan makan dan kebutuhan nutrisi
+3. Membahas tujuan kesehatan dan tantangan
+4. Mengembangkan rencana nutrisi yang dipersonalisasi
+5. Memberikan pendidikan dan sumber daya
+6. Menjadwalkan janji temu tindak lanjut sesuai kebutuhan
 
-## Our Team
+## Tim Kami
 
-Our team of registered dietitians and nutritionists are licensed professionals with expertise in medical nutrition therapy, ensuring you receive the highest quality of care.
+Tim ahli gizi terdaftar dan ahli nutrisi kami adalah profesional berlisensi dengan keahlian dalam terapi nutrisi medis, memastikan Anda menerima perawatan berkualitas tertinggi.
     `,
   },
   {
     id: "4",
-    title: "Cardiology & Heart Care",
-    description: "Comprehensive cardiovascular services including heart disease prevention, diagnosis, treatment, and ongoing cardiac care.",
-    department: "Cardiology",
-    duration: "60-90 minutes",
-    category: "Specialty Care",
+    title: "Kardiologi & Perawatan Jantung",
+    description: "Layanan kardiovaskular komprehensif termasuk pencegahan penyakit jantung, diagnosis, pengobatan, dan perawatan jantung berkelanjutan.",
+    department: "Kardiologi",
+    duration: "60-90 menit",
+    category: "Perawatan Khusus",
     content: `
-# Cardiology & Heart Care
+# Kardiologi & Perawatan Jantung
 
-Our Cardiology department provides comprehensive cardiovascular care, from preventive screenings to advanced treatments for heart conditions. We are committed to helping you maintain a healthy heart and manage cardiovascular disease effectively.
+Departemen Kardiologi kami menyediakan perawatan kardiovaskular komprehensif, dari skrining pencegahan hingga perawatan lanjutan untuk kondisi jantung. Kami berkomitmen untuk membantu Anda mempertahankan jantung yang sehat dan mengelola penyakit kardiovaskular secara efektif.
 
-## Services Offered
+## Layanan yang Ditawarkan
 
-### Diagnostic Services
-- Electrocardiogram (EKG/ECG)
-- Echocardiography (heart ultrasound)
-- Stress testing
-- Cardiac catheterization
-- Holter monitoring (24-hour heart rhythm monitoring)
-- Blood pressure monitoring
+### Layanan Diagnostik
+- Elektrokardiogram (EKG/ECG)
+- Ekokardiografi (ultrasonografi jantung)
+- Uji stres
+- Kateterisasi jantung
+- Pemantauan Holter (pemantauan irama jantung 24 jam)
+- Pemantauan tekanan darah
 
-### Treatment Services
-- Heart disease management
-- Hypertension (high blood pressure) treatment
-- Arrhythmia (irregular heartbeat) management
-- Heart failure care
-- Cardiac rehabilitation programs
-- Preventive cardiology
+### Layanan Perawatan
+- Manajemen penyakit jantung
+- Pengobatan hipertensi (tekanan darah tinggi)
+- Manajemen aritmia (detak jantung tidak teratur)
+- Perawatan gagal jantung
+- Program rehabilitasi jantung
+- Kardiologi pencegahan
 
-### Specialized Care
-- Coronary artery disease treatment
-- Heart valve disease management
-- Congenital heart defect care
-- Peripheral artery disease treatment
+### Perawatan Khusus
+- Pengobatan penyakit arteri koroner
+- Manajemen penyakit katup jantung
+- Perawatan cacat jantung bawaan
+- Pengobatan penyakit arteri perifer
 
-## Conditions We Treat
+## Kondisi yang Kami Tangani
 
-- Coronary artery disease
-- Heart failure
-- Arrhythmias (atrial fibrillation, bradycardia, tachycardia)
-- Hypertension
-- Heart valve disorders
-- Congestive heart failure
-- Peripheral artery disease
-- Aortic aneurysm
-- Congenital heart defects
+- Penyakit arteri koroner
+- Gagal jantung
+- Aritmia (fibrilasi atrium, bradikardia, takikardia)
+- Hipertensi
+- Gangguan katup jantung
+- Gagal jantung kongestif
+- Penyakit arteri perifer
+- Aneurisma aorta
+- Cacat jantung bawaan
 
-## Our Approach
+## Pendekatan Kami
 
-We provide comprehensive cardiovascular care through:
+Kami menyediakan perawatan kardiovaskular komprehensif melalui:
 
-- **Advanced Diagnostics**: State-of-the-art equipment for accurate diagnosis
-- **Evidence-Based Treatment**: Following latest clinical guidelines and best practices
-- **Preventive Focus**: Early detection and prevention of heart disease
-- **Multidisciplinary Team**: Collaboration with other specialists when needed
-- **Patient Education**: Empowering patients with knowledge about heart health
+- **Diagnostik Canggih**: Peralatan mutakhir untuk diagnosis yang akurat
+- **Perawatan Berbasis Bukti**: Mengikuti pedoman klinis terbaru dan praktik terbaik
+- **Fokus Pencegahan**: Deteksi dini dan pencegahan penyakit jantung
+- **Tim Multidisiplin**: Kolaborasi dengan spesialis lain saat diperlukan
+- **Pendidikan Pasien**: Memberdayakan pasien dengan pengetahuan tentang kesehatan jantung
 
-## When to Visit a Cardiologist
+## Kapan Harus Mengunjungi Kardiolog
 
-Consider scheduling an appointment if you experience:
+Pertimbangkan untuk menjadwalkan janji temu jika Anda mengalami:
 
-- Chest pain or discomfort
-- Shortness of breath
-- Irregular heartbeat
-- Dizziness or fainting
-- Swelling in legs or feet
-- Family history of heart disease
-- High blood pressure
-- High cholesterol
-- Diabetes (increased risk of heart disease)
+- Nyeri atau ketidaknyamanan dada
+- Sesak napas
+- Detak jantung tidak teratur
+- Pusing atau pingsan
+- Pembengkakan di kaki atau kaki
+- Riwayat keluarga penyakit jantung
+- Tekanan darah tinggi
+- Kolesterol tinggi
+- Diabetes (peningkatan risiko penyakit jantung)
 
-## Prevention and Maintenance
+## Pencegahan dan Pemeliharaan
 
-We emphasize preventive cardiology through:
+Kami menekankan kardiologi pencegahan melalui:
 
-- Regular cardiovascular screenings
-- Lifestyle counseling (diet, exercise, smoking cessation)
-- Risk factor management
-- Medication management when necessary
-- Regular follow-up care
+- Skrining kardiovaskular rutin
+- Konseling gaya hidup (diet, olahraga, berhenti merokok)
+- Manajemen faktor risiko
+- Manajemen obat saat diperlukan
+- Perawatan tindak lanjut rutin
 
-## Our Team
+## Tim Kami
 
-Our board-certified cardiologists and cardiac care team are dedicated to providing the highest quality cardiovascular care, utilizing the latest diagnostic tools and treatment options.
+Kardiolog bersertifikat dan tim perawatan jantung kami berdedikasi untuk memberikan perawatan kardiovaskular berkualitas tertinggi, menggunakan alat diagnostik dan pilihan perawatan terbaru.
     `,
   },
   {
     id: "5",
-    title: "Women's Health & Obstetrics",
-    description: "Comprehensive women's healthcare services including gynecology, obstetrics, reproductive health, and specialized care for all stages of life.",
-    department: "Obstetrics & Gynecology",
-    duration: "30-60 minutes",
-    category: "Women's Health",
+    title: "Kesehatan Wanita & Obstetri",
+    description: "Layanan kesehatan wanita komprehensif termasuk ginekologi, obstetri, kesehatan reproduksi, dan perawatan khusus untuk semua tahap kehidupan.",
+    department: "Obstetri & Ginekologi",
+    duration: "30-60 menit",
+    category: "Kesehatan Wanita",
     content: `
-# Women's Health & Obstetrics
+# Kesehatan Wanita & Obstetri
 
-Our Women's Health department provides comprehensive gynecological and obstetrical care for women at every stage of life. We offer a full range of services from routine preventive care to specialized treatments in a supportive and confidential environment.
+Departemen Kesehatan Wanita kami menyediakan perawatan ginekologi dan obstetri komprehensif untuk wanita di setiap tahap kehidupan. Kami menawarkan berbagai layanan dari perawatan pencegahan rutin hingga perawatan khusus dalam lingkungan yang mendukung dan rahasia.
 
-## Services Offered
+## Layanan yang Ditawarkan
 
-### Gynecology Services
-- Annual well-woman exams
-- Pap smears and cervical cancer screening
-- Breast health exams and mammography referrals
-- Contraception counseling and management
-- Treatment of gynecological conditions
-- Menopause management
+### Layanan Ginekologi
+- Pemeriksaan kesehatan wanita tahunan
+- Pap smear dan skrining kanker serviks
+- Pemeriksaan kesehatan payudara dan rujukan mammografi
+- Konseling dan manajemen kontrasepsi
+- Pengobatan kondisi ginekologi
+- Manajemen menopause
 
-### Obstetric Services
-- Prenatal care and monitoring
-- High-risk pregnancy management
-- Delivery services
-- Postpartum care
-- Preconception counseling
-- Fertility evaluations
+### Layanan Obstetri
+- Perawatan dan pemantauan prenatal
+- Manajemen kehamilan berisiko tinggi
+- Layanan persalinan
+- Perawatan pascapersalinan
+- Konseling pra-konsepsi
+- Evaluasi kesuburan
 
-### Specialized Services
-- Minimally invasive gynecological surgery
-- Treatment of menstrual disorders
-- Pelvic pain management
-- Urinary incontinence treatment
-- Polycystic ovary syndrome (PCOS) management
-- Endometriosis care
+### Layanan Khusus
+- Bedah ginekologi invasif minimal
+- Pengobatan gangguan menstruasi
+- Manajemen nyeri panggul
+- Pengobatan inkontinensia urin
+- Manajemen sindrom ovarium polikistik (PCOS)
+- Perawatan endometriosis
 
-## Conditions We Treat
+## Kondisi yang Kami Tangani
 
-- Menstrual disorders (heavy bleeding, irregular periods)
-- Polycystic ovary syndrome (PCOS)
+- Gangguan menstruasi (pendarahan berat, periode tidak teratur)
+- Sindrom ovarium polikistik (PCOS)
 - Endometriosis
-- Uterine fibroids
-- Ovarian cysts
-- Pelvic inflammatory disease (PID)
-- Urinary tract infections
-- Menopause symptoms
-- Infertility concerns
-- Pregnancy complications
+- Fibroid rahim
+- Kista ovarium
+- Penyakit radang panggul (PID)
+- Infeksi saluran kemih
+- Gejala menopause
+- Kekhawatiran infertilitas
+- Komplikasi kehamilan
 
-## Our Approach
+## Pendekatan Kami
 
-We provide compassionate, personalized care that addresses:
+Kami menyediakan perawatan yang penuh kasih dan dipersonalisasi yang menangani:
 
-- **Preventive Care**: Regular screenings and early detection
-- **Patient-Centered**: Respecting your choices and preferences
-- **Comprehensive Services**: Addressing all aspects of women's health
-- **Education**: Empowering you with knowledge about your health
-- **Continuity**: Long-term care relationships throughout life stages
+- **Perawatan Pencegahan**: Skrining rutin dan deteksi dini
+- **Berpusat pada Pasien**: Menghormati pilihan dan preferensi Anda
+- **Layanan Komprehensif**: Menangani semua aspek kesehatan wanita
+- **Pendidikan**: Memberdayakan Anda dengan pengetahuan tentang kesehatan
+- **Kontinuitas**: Hubungan perawatan jangka panjang sepanjang tahap kehidupan
 
-## Key Health Screenings
+## Skrining Kesehatan Utama
 
-We recommend regular screenings based on your age and risk factors:
+Kami merekomendasikan skrining rutin berdasarkan usia dan faktor risiko Anda:
 
-1. **Pap Smears**: Starting at age 21 for cervical cancer screening
-2. **Mammograms**: Starting at age 40 (or earlier based on risk factors)
-3. **Bone Density Tests**: For postmenopausal women
-4. **Blood Pressure and Cholesterol**: Regular cardiovascular assessments
-5. **STD Testing**: Based on risk factors and symptoms
+1. **Pap Smear**: Dimulai pada usia 21 untuk skrining kanker serviks
+2. **Mammogram**: Dimulai pada usia 40 (atau lebih awal berdasarkan faktor risiko)
+3. **Tes Kepadatan Tulang**: Untuk wanita pascamenopause
+4. **Tekanan Darah dan Kolesterol**: Penilaian kardiovaskular rutin
+5. **Tes STD**: Berdasarkan faktor risiko dan gejala
 
-## Life Stage Care
+## Perawatan Tahap Kehidupan
 
-### Adolescence
-- First gynecological visit guidance
-- Menstrual health education
-- Contraception counseling
-- Acne and hormonal concerns
+### Masa Remaja
+- Panduan kunjungan ginekologi pertama
+- Pendidikan kesehatan menstruasi
+- Konseling kontrasepsi
+- Kekhawatiran jerawat dan hormonal
 
-### Reproductive Years
-- Preconception planning
-- Prenatal care
-- Postpartum support
-- Contraception management
+### Masa Reproduktif
+- Perencanaan pra-konsepsi
+- Perawatan prenatal
+- Dukungan pascapersalinan
+- Manajemen kontrasepsi
 
 ### Perimenopause & Menopause
-- Hormone therapy options
-- Symptom management
-- Bone health monitoring
-- Cardiovascular health
+- Pilihan terapi hormon
+- Manajemen gejala
+- Pemantauan kesehatan tulang
+- Kesehatan kardiovaskular
 
-## Our Team
+## Tim Kami
 
-Our experienced obstetricians and gynecologists, along with certified nurse midwives and women's health nurse practitioners, are dedicated to providing comprehensive, compassionate care tailored to your individual needs.
+Obstetri dan ginekolog berpengalaman kami, bersama dengan bidan perawat bersertifikat dan praktisi perawat kesehatan wanita, berdedikasi untuk memberikan perawatan komprehensif dan penuh kasih yang disesuaikan dengan kebutuhan individual Anda.
     `,
   },
 ];

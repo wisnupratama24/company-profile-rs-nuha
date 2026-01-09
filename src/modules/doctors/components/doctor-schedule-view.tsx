@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 import { CalendarIcon, Clock, MapPin } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DoctorScheduleData } from "../utils/constants";
 import { getDayAvailableSlotsCount } from "../utils/helpers";
@@ -12,14 +11,12 @@ interface DoctorScheduleViewProps {
   doctor: DoctorScheduleData;
   selectedDay: number;
   onDaySelect: (index: number) => void;
-  onSlotClick: (slotTime: string, day: string) => void;
 }
 
 export function DoctorScheduleView({
   doctor,
   selectedDay,
   onDaySelect,
-  onSlotClick,
 }: DoctorScheduleViewProps) {
   const selectedDayData = doctor.schedule[selectedDay];
   const availableSlotsCount = selectedDayData
@@ -33,9 +30,9 @@ export function DoctorScheduleView({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col"
+      className="border rounded-lg p-6 bg-white"
     >
-      <div className="space-y-6 pb-6">
+      <div className="space-y-6">
         {/* Doctor Header */}
         <div className="space-y-4">
           <div>
@@ -44,39 +41,29 @@ export function DoctorScheduleView({
                 {doctor.doctor.specialization}
               </span>
             </div>
-            <h1 className="text-3xl font-bold leading-tight mb-3">
+            <h2 className="text-2xl font-bold leading-tight mb-2">
               {doctor.doctor.name}
-            </h1>
-            <p className="text-base text-muted-foreground">
-              Available appointments for the week
-            </p>
-          </div>
-          <Separator />
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <MapPin className="h-5 w-5 text-primary" />
+            </h2>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                <span>{doctor.doctor.location}</span>
               </div>
-              <div>
-                <p className="font-medium text-foreground">
-                  {doctor.doctor.location}
-                </p>
-                <p className="text-xs">Location</p>
+              <Separator orientation="vertical" className="h-4" />
+              <div className="flex items-center gap-2">
+                <CalendarIcon className="h-4 w-4" />
+                <span>{doctor.schedule.length} hari tersedia</span>
               </div>
-            </div>
-            <Separator orientation="vertical" className="h-10" />
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="h-4 w-4" />
-              <span>{doctor.schedule.length} days available</span>
             </div>
           </div>
         </div>
+
         <Separator />
 
         {/* Schedule Days */}
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold mb-4">Select a Day</h3>
+            <h3 className="text-lg font-semibold mb-4">Pilih Hari</h3>
             <div className="flex gap-2 flex-wrap">
               {doctor.schedule.map((day, index) => (
                 <motion.button
@@ -102,26 +89,20 @@ export function DoctorScheduleView({
             <div className="flex items-center gap-2 mb-4">
               <Clock className="h-5 w-5 text-primary" />
               <h3 className="text-lg font-semibold">
-                Available Time Slots - {selectedDayData?.day}
+                Slot Waktu Tersedia - {selectedDayData?.day}
               </h3>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {selectedDayData?.slots.map((slot) => (
                 <motion.button
                   key={slot.id}
-                  whileHover={slot.available ? { scale: 1.05 } : {}}
-                  whileTap={slot.available ? { scale: 0.95 } : {}}
-                  onClick={() => {
-                    if (slot.available) {
-                      onSlotClick(slot.time, selectedDayData.day);
-                    }
-                  }}
-                  disabled={!slot.available}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className={cn(
-                    "px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-200",
+                    "px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-200 hover:border-primary hover:bg-primary/5",
                     slot.available
-                      ? "border-border bg-background text-foreground hover:border-primary hover:bg-primary/5 cursor-pointer"
-                      : "border-border/50 bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                      ? "border-border bg-background text-foreground"
+                      : "border-border/50 bg-muted text-muted-foreground opacity-70"
                   )}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -133,7 +114,7 @@ export function DoctorScheduleView({
             </div>
             {availableSlotsCount === 0 && (
               <p className="text-sm text-muted-foreground mt-4">
-                No available slots for this day. Please select another day.
+                Tidak ada slot tersedia untuk hari ini. Silakan pilih hari lain.
               </p>
             )}
           </div>
