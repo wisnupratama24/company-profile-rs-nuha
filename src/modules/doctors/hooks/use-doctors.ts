@@ -1,34 +1,53 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import {
-  fetchDoctors,
-  fetchDoctorById,
-  FetchDoctorsParams,
+  fetchDoctorSchedules,
+  fetchDoctorScheduleById,
+  fetchPolis,
+  FetchDoctorScheduleParams,
 } from "@/services/doctors";
-import { DoctorScheduleData } from "../utils/constants";
+import { DoctorScheduleData, Poli } from "../utils/constants";
 
 /**
- * Hook to fetch all doctors with optional filters
+ * Hook to fetch doctor schedules with optional filters
  */
-export function useDoctors(params?: FetchDoctorsParams) {
+export function useDoctorSchedules(params?: FetchDoctorScheduleParams) {
   return useQuery<DoctorScheduleData[]>({
-    queryKey: ["doctors", params],
-    queryFn: () => fetchDoctors(params),
+    queryKey: ["doctor-schedules", params],
+    queryFn: () => fetchDoctorSchedules(params),
     staleTime: 60 * 1000, // 1 minute
   });
 }
 
 /**
- * Hook to fetch a single doctor by ID
+ * Hook to fetch a single doctor's schedule by ID
  */
-export function useDoctor(id: string | null) {
-  return useQuery<DoctorScheduleData>({
-    queryKey: ["doctor", id],
+export function useDoctorSchedule(id: number | null, startDate?: Date, endDate?: Date) {
+  return useQuery<DoctorScheduleData | null>({
+    queryKey: ["doctor-schedule", id, startDate?.toISOString(), endDate?.toISOString()],
     queryFn: () => {
-      if (!id) throw new Error("Doctor ID is required");
-      return fetchDoctorById(id);
+      if (!id) return null;
+      return fetchDoctorScheduleById(id, startDate, endDate);
     },
     enabled: !!id,
     staleTime: 60 * 1000,
   });
 }
 
+/**
+ * Hook to fetch all polis
+ * TODO: Replace with dedicated poli API when available
+ */
+export function usePolis(startDate?: Date, endDate?: Date) {
+  return useQuery<Poli[]>({
+    queryKey: ["polis", startDate?.toISOString(), endDate?.toISOString()],
+    queryFn: () => fetchPolis(startDate, endDate),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// ============ Legacy exports for backward compatibility ============
+
+export const useDoctors = useDoctorSchedules;
+export const useDoctor = (id: string | null) => {
+  return useDoctorSchedule(id ? Number(id) : null);
+};

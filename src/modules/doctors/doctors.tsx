@@ -4,47 +4,63 @@ import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Filter } from "lucide-react";
 import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import { DateRange } from "react-day-picker";
 import { DoctorScheduleData } from "./utils/constants";
 import { FilterSection } from "./components/filter-section";
 import { SearchSection } from "./components/search-section";
 import { DoctorListView } from "./components/doctor-list-view";
 import { DoctorScheduleView } from "./components/doctor-schedule-view";
-import { getAvailableSlotsCount, hasActiveFilters } from "./utils/helpers";
+import { formatPoliLabel, getAvailableSlotsCount, hasActiveFilters } from "./utils/helpers";
 import { useDoctors } from "./hooks/use-doctors";
 
+/**
+ * Halaman/modul "Jadwal Dokter".
+ *
+ * Kegunaan utama:
+ * - Menyediakan filter poli, filter dokter, pencarian nama, dan filter rentang tanggal.
+ * - Mengambil data dokter dari API via `useDoctors`, lalu menampilkan:
+ *   - Ringkasan poli (kartu poli) atau
+ *   - Daftar dokter (kartu dokter + jadwal), atau
+ *   - Detail jadwal 1 dokter (kalau user memilih dokter di panel kiri).
+ */
 function DoctorSchedule() {
-  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [selectedPoli, setSelectedPoli] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<DoctorScheduleData | null>(null);
   const [selectedDay, setSelectedDay] = useState(0);
 
-  // Collapsible states
-  const [isDepartmentOpen, setIsDepartmentOpen] = useState(true);
+  // State buka/tutup panel filter (collapsible) di sidebar.
+  const [isPoliOpen, setIsPoliOpen] = useState(true);
   const [isDoctorsOpen, setIsDoctorsOpen] = useState(true);
 
-  // Search states
+  // State input pencarian & rentang tanggal (dipakai sebagai parameter query API).
   const [searchDoctor, setSearchDoctor] = useState("");
-  const [searchDate, setSearchDate] = useState<Date | undefined>(undefined);
-  const [showAllDoctors, setShowAllDoctors] = useState(false);
-  const [showAllDepartments, setShowAllDepartments] = useState(true);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
-  // API: Fetch all doctors (without department filter) to get all departments
+  // Flag tampilan:
+  // - `showAllDoctors`: paksa tampilkan daftar dokter (tanpa pilih dokter spesifik).
+  const [showAllDoctors, setShowAllDoctors] = useState(false);
+
+  // API: ambil semua dokter TANPA filter poli supaya bisa dapat daftar poli lengkap.
   const { data: allDoctors = [], isLoading: isLoadingAllDoctors } = useDoctors({
     search: searchDoctor.trim() || undefined,
-    date: searchDate ? format(searchDate, "yyyy-MM-dd") : undefined,
+    startDate: dateRange?.from,
+    endDate: dateRange?.to || dateRange?.from,
   });
 
-  // API: Fetch doctors with filters (including department)
+  // API: ambil dokter dengan filter aktif (poli/nama/tanggal).
   const { data: doctors = [], isLoading, error } = useDoctors({
-    department: selectedDepartment || undefined,
+    poli: selectedPoli || undefined,
     search: searchDoctor.trim() || undefined,
-    date: searchDate ? format(searchDate, "yyyy-MM-dd") : undefined,
+    startDate: dateRange?.from,
+    endDate: dateRange?.to || dateRange?.from,
   });
 
-  // Combined loading state
+  // Loading gabungan: konten dianggap loading kalau salah satu query masih loading.
   const isContentLoading = isLoading || isLoadingAllDoctors;
 
-  // Get unique departments/specializations from ALL doctors (not filtered)
-  const departments = useMemo(() => {
+  // Ambil daftar poli unik dari SEMUA dokter (bukan yang sudah terfilter).
+  const polis = useMemo(() => {
     const deptSet = new Set<string>();
     allDoctors.forEach((doctor) => {
       deptSet.add(doctor.doctor.specialization);
@@ -52,9 +68,9 @@ function DoctorSchedule() {
     return Array.from(deptSet).sort();
   }, [allDoctors]);
 
-  // Department stats for overview
-  const departmentStats = useMemo(() => {
-    return departments.map((dept) => {
+  // Statistik poli untuk tampilan ringkas (jumlah dokter + total slot tersedia per poli).
+  const poliStats = useMemo(() => {
+    return polis.map((dept) => {
       const deptDoctors = doctors.filter(
         (doctor) => doctor.doctor.specialization === dept
       );
@@ -68,58 +84,53 @@ function DoctorSchedule() {
         availableSlots: totalSlots,
       };
     });
-  }, [departments, doctors]);
+  }, [polis, doctors]);
 
-  // Filtered doctors (client-side filtering if needed, but API should handle most of it)
-  const filteredDoctors = useMemo(() => {
-    // API already filters by department, search, and date
-    // This is just for additional client-side filtering if needed
-    return doctors;
-  }, [doctors]);
+  // Data `doctors` sudah dalam kondisi terfilter oleh API (poli/nama/tanggal).
+  const filteredDoctors = doctors;
 
-  // Prepare department items for FilterSection
-  const departmentItems = useMemo(() => {
-    return departments.map((dept) => ({
+  // Siapkan data poli untuk komponen `FilterSection` (sidebar).
+  const poliItems = useMemo(() => {
+    return polis.map((dept) => ({
       id: dept,
-      label: dept,
+      label: formatPoliLabel(dept),
     }));
-  }, [departments]);
+  }, [polis]);
 
-  // Prepare doctor items for FilterSection
+  // Siapkan data dokter untuk komponen `FilterSection` (sidebar).
   const doctorItems = useMemo(() => {
     return filteredDoctors.map((doctor) => ({
       id: doctor.doctor.id,
       label: doctor.doctor.name,
-      subtitle: doctor.doctor.specialization,
-      doctorData: doctor, // Keep reference to full doctor data
+      subtitle: formatPoliLabel(doctor.doctor.specialization),
+      doctorData: doctor, // Simpan referensi data lengkap (biar gampang dipakai kalau diperlukan).
     }));
   }, [filteredDoctors]);
 
-  // Helper function to reset filter states
+  // Reset flag tampilan (dipanggil saat user mulai mengetik / ganti tanggal / ganti pilihan).
   const resetFilterStates = useCallback(() => {
     setShowAllDoctors(false);
-    setShowAllDepartments(false);
   }, []);
 
-  // Helper function to clear all filters
+  // Bersihkan semua filter dan kembalikan ke kondisi awal (default: tampilkan semua poli).
   const clearAllFilters = useCallback(() => {
     resetFilterStates();
-    setShowAllDepartments(true);
     setSearchDoctor("");
-    setSearchDate(undefined);
-    setSelectedDepartment(null);
+    setDateRange(undefined);
+    setSelectedPoli(null);
     setSelectedDoctor(null);
     setSelectedDay(0);
   }, [resetFilterStates]);
 
-  // Clear selected doctor when filters/search change; show list instead of auto-selecting
+  // Saat filter/pencarian berubah, batalkan pilihan dokter (kalau ada),
+  // supaya UI kembali menampilkan list hasil (bukan "terkunci" di detail 1 dokter).
   useEffect(() => {
-    if (hasActiveFilters(selectedDepartment, searchDoctor, searchDate)) {
+    if (hasActiveFilters(selectedPoli, searchDoctor, dateRange)) {
       setSelectedDoctor(null);
       setSelectedDay(0);
       resetFilterStates();
     }
-  }, [selectedDepartment, searchDoctor, searchDate, resetFilterStates]);
+  }, [selectedPoli, searchDoctor, dateRange, resetFilterStates]);
 
   return (
     <div className="max-w-7xl w-full">
@@ -137,79 +148,81 @@ function DoctorSchedule() {
           transition={{ delay: 0.1 }}
           className="text-muted-foreground mb-6"
         >
-          Lihat dan pesan janji temu dengan tenaga medis profesional kami
+          Jadwal praktik dokter {dateRange?.from 
+            ? dateRange.to && dateRange.from.toDateString() !== dateRange.to.toDateString()
+              ? `${format(dateRange.from, "d MMMM", { locale: id })} - ${format(dateRange.to, "d MMMM yyyy", { locale: id })}`
+              : format(dateRange.from, "EEEE, d MMMM yyyy", { locale: id })
+            : "hari ini"}
         </motion.p>
 
-        {/* Search Section */}
+        {/* Panel pencarian: input nama dokter + filter rentang tanggal + tombol reset */}
         <SearchSection
           searchDoctor={searchDoctor}
-          searchDate={searchDate}
+          dateRange={dateRange}
           onSearchDoctorChange={(value) => {
             resetFilterStates();
             setSearchDoctor(value);
           }}
-          onSearchDateChange={(date) => {
+          onDateRangeChange={(range) => {
             resetFilterStates();
-            setSearchDate(date);
+            setDateRange(range);
           }}
           onClearAll={clearAllFilters}
         />
       </div>
 
       <div className="grid lg:grid-cols-[300px_1fr] gap-6 min-h-[800px]">
-        {/* Left Section - Doctors List */}
+        {/* Sidebar kiri: filter poli + filter dokter */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
           className="flex flex-col lg:sticky lg:top-24 lg:self-start gap-4"
         >
-          {/* Department Filter - Always visible */}
+          {/* Filter Poli (selalu ditampilkan) */}
           <FilterSection
-            title="Departemen"
+            title="Spesialis"
             icon={<Filter className="h-4 w-4" />}
-            items={departmentItems}
-            selectedId={selectedDepartment}
+            items={poliItems}
+            selectedId={selectedPoli}
             onSelect={(id) => {
               if (id === null) {
-                setSelectedDepartment(null);
+                setSelectedPoli(null);
                 setSelectedDoctor(null);
                 setSelectedDay(0);
-                setShowAllDepartments(true);
                 setShowAllDoctors(false);
               } else {
-                setSelectedDepartment(id);
+                setSelectedPoli(id);
                 resetFilterStates();
               }
             }}
-            allLabel="Semua Departemen"
-            isOpen={isDepartmentOpen}
-            onOpenChange={setIsDepartmentOpen}
+            allLabel="Semua Spesialis"
+            isOpen={isPoliOpen}
+            onOpenChange={setIsPoliOpen}
             showAllButton={true}
             isAllActive={
-              !selectedDepartment && !selectedDoctor && !showAllDoctors
+              !selectedPoli && !selectedDoctor && !showAllDoctors
             }
           />
 
-          {/* Doctors List - Card always visible, loading inside */}
+          {/* Filter Dokter (selalu ditampilkan, loading-nya ditangani di dalam komponen) */}
           <FilterSection
             title="Dokter"
             items={doctorItems}
             selectedId={selectedDoctor?.doctor.id || null}
             onSelect={(id) => {
               if (id === null) {
-                setSelectedDepartment(null);
+                setSelectedPoli(null);
                 setSelectedDoctor(null);
                 setSelectedDay(0);
                 setShowAllDoctors(true);
-                setShowAllDepartments(false);
                 setSearchDoctor("");
-                setSearchDate(undefined);
+                setDateRange(undefined);
               } else {
                 const doctor = filteredDoctors.find((d) => d.doctor.id === id);
                 if (doctor) {
                   resetFilterStates();
-                  setSelectedDepartment(null);
+                  setSelectedPoli(null);
                   setSelectedDoctor(doctor);
                   setSelectedDay(0);
                 }
@@ -219,26 +232,26 @@ function DoctorSchedule() {
             isOpen={isDoctorsOpen}
             onOpenChange={setIsDoctorsOpen}
             count={
-              selectedDepartment || searchDoctor || searchDate
+              selectedPoli || searchDoctor || dateRange?.from
                 ? filteredDoctors.length
                 : undefined
             }
             subtitle={
-              searchDoctor || searchDate ? "Difilter berdasarkan pencarian" : undefined
+              searchDoctor || dateRange?.from ? "Difilter berdasarkan pencarian" : undefined
             }
             showAllButton={true}
             isAllActive={
               showAllDoctors &&
               !selectedDoctor &&
-              !selectedDepartment &&
+              !selectedPoli &&
               !searchDoctor &&
-              !searchDate
+              !dateRange?.from
             }
             isLoading={isLoading}
           />
         </motion.div>
 
-        {/* Right Section - Schedule Details or Doctor List */}
+        {/* Konten kanan: menampilkan daftar dokter/poli ATAU detail jadwal dokter yang dipilih */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -246,7 +259,7 @@ function DoctorSchedule() {
           className="flex flex-col"
         >
           {error ? (
-            /* Error state - only in right content area */
+            /* State error: ditampilkan di area konten kanan */
             <div className="flex items-center justify-center min-h-[600px]">
               <div className="text-center">
                 <p className="text-destructive mb-4">
@@ -261,7 +274,7 @@ function DoctorSchedule() {
               </div>
             </div>
           ) : isContentLoading ? (
-            /* Loading state - only in right content area */
+            /* State loading: ditampilkan di area konten kanan */
             <div className="flex items-center justify-center min-h-[600px]">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
@@ -272,19 +285,13 @@ function DoctorSchedule() {
             <AnimatePresence mode="wait">
               {!selectedDoctor ? (
                 <DoctorListView
-                  selectedDepartment={selectedDepartment}
+                  selectedPoli={selectedPoli}
                   searchDoctor={searchDoctor}
-                  searchDate={searchDate}
+                  dateRange={dateRange}
                   showAllDoctors={showAllDoctors}
                   filteredDoctors={filteredDoctors}
-                  departmentStats={departmentStats}
-                  onDoctorSelect={(doctor) => {
-                    resetFilterStates();
-                    setSelectedDepartment(null);
-                    setSelectedDoctor(doctor);
-                    setSelectedDay(0);
-                  }}
-                  onDepartmentSelect={setSelectedDepartment}
+                  poliStats={poliStats}
+                  onPoliSelect={setSelectedPoli}
                 />
               ) : (
                 <DoctorScheduleView

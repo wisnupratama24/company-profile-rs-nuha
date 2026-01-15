@@ -7,24 +7,74 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
+import { id } from "date-fns/locale";
+import { DateRange } from "react-day-picker";
+import { MAX_DATE_RANGE_DAYS } from "../utils/constants";
 
 interface SearchSectionProps {
   searchDoctor: string;
-  searchDate: Date | undefined;
+  dateRange: DateRange | undefined;
   onSearchDoctorChange: (value: string) => void;
-  onSearchDateChange: (date: Date | undefined) => void;
+  onDateRangeChange: (range: DateRange | undefined) => void;
   onClearAll: () => void;
 }
 
+/**
+ * Panel pencarian untuk modul Jadwal Dokter.
+ *
+ * Kegunaan:
+ * - Input pencarian nama dokter.
+ * - Pemilihan rentang tanggal (awal-akhir) dengan batas maksimal \(MAX_DATE_RANGE_DAYS\) hari.
+ * - Tombol "hapus" untuk mereset filter pencarian & tanggal.
+ */
 export function SearchSection({
   searchDoctor,
-  searchDate,
+  dateRange,
   onSearchDoctorChange,
-  onSearchDateChange,
+  onDateRangeChange,
   onClearAll,
 }: SearchSectionProps) {
-  const hasActiveSearch = !!(searchDoctor || searchDate);
+  const hasActiveSearch = !!(searchDoctor || dateRange?.from);
+
+  // Menghitung batas maksimal tanggal akhir (maks. \(MAX_DATE_RANGE_DAYS\) hari dari tanggal awal).
+  const maxEndDate = dateRange?.from 
+    ? addDays(dateRange.from, MAX_DATE_RANGE_DAYS - 1) 
+    : undefined;
+
+  const handleStartDateChange = (date: Date | undefined) => {
+    if (!date) {
+      onDateRangeChange(undefined);
+      return;
+    }
+    
+    // Set tanggal awal. Tanggal akhir dipertahankan kalau masih valid; kalau tidak, disamakan ke tanggal awal.
+    const currentEnd = dateRange?.to;
+    let newEnd = date; // Default end to start date
+    
+    if (currentEnd && currentEnd >= date) {
+      const maxAllowed = addDays(date, MAX_DATE_RANGE_DAYS - 1);
+      newEnd = currentEnd > maxAllowed ? maxAllowed : currentEnd;
+    }
+    
+    onDateRangeChange({ from: date, to: newEnd });
+  };
+
+  const handleEndDateChange = (date: Date | undefined) => {
+    if (!dateRange?.from) return;
+    
+    if (!date) {
+      // Kalau tanggal akhir dihapus, default-nya diset sama dengan tanggal awal.
+      onDateRangeChange({ from: dateRange.from, to: dateRange.from });
+      return;
+    }
+    
+    // Validasi tanggal akhir agar tetap berada di rentang yang diizinkan.
+    const maxAllowed = addDays(dateRange.from, MAX_DATE_RANGE_DAYS - 1);
+    const validDate = date > maxAllowed ? maxAllowed : date;
+    
+    onDateRangeChange({ from: dateRange.from, to: validDate });
+  };
 
   return (
     <motion.div
@@ -37,16 +87,16 @@ export function SearchSection({
         <Search className="h-4 w-4 text-muted-foreground" />
         <h3 className="text-sm font-semibold">Cari</h3>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Search by Doctor Name */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Pencarian berdasarkan nama dokter */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-muted-foreground">
-            Cari berdasarkan Nama Dokter
+            Nama Dokter
           </label>
           <div className="relative">
             <Input
               type="text"
-              placeholder="contoh: Dr. Sarah Johnson"
+              placeholder="contoh: dr. Ari Mulyani"
               value={searchDoctor}
               onChange={(e) => onSearchDoctorChange(e.target.value)}
               className="pr-8"
@@ -62,37 +112,42 @@ export function SearchSection({
           </div>
         </div>
 
-        {/* Search by Date */}
+        {/* Tanggal awal (wajib dipilih dulu sebelum tanggal akhir bisa dipilih) */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-muted-foreground">
-            Cari berdasarkan Tanggal
+            Tanggal Awal
           </label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left font-normal pr-8",
-                  !searchDate && "text-muted-foreground"
+                  "w-full justify-start text-left font-normal",
+                  !dateRange?.from && "text-muted-foreground"
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {searchDate ? format(searchDate, "PPP") : <span>Pilih tanggal</span>}
+                {dateRange?.from ? (
+                  <span>{format(dateRange.from, "d MMM yyyy", { locale: id })}</span>
+                ) : (
+                  <span>Pilih tanggal</span>
+                )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
-                selected={searchDate}
-                onSelect={onSearchDateChange}
+                selected={dateRange?.from}
+                onSelect={handleStartDateChange}
+                locale={id}
                 initialFocus
               />
-              {searchDate && (
+              {dateRange?.from && (
                 <div className="p-3 border-t">
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onSearchDateChange(undefined)}
+                    onClick={() => onDateRangeChange(undefined)}
                     className="w-full text-xs"
                   >
                     <X className="mr-2 h-3 w-3" />
@@ -103,9 +158,59 @@ export function SearchSection({
             </PopoverContent>
           </Popover>
         </div>
+
+        {/* Tanggal akhir (dibatasi maks. \(MAX_DATE_RANGE_DAYS\) hari dari tanggal awal) */}
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-muted-foreground">
+            Tanggal Akhir {dateRange?.from && <span className="text-muted-foreground/60">(maks. {MAX_DATE_RANGE_DAYS} hari)</span>}
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !dateRange?.from && "text-muted-foreground cursor-not-allowed opacity-50"
+                )}
+                disabled={!dateRange?.from}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {dateRange?.to ? (
+                  <span>{format(dateRange.to, "d MMM yyyy", { locale: id })}</span>
+                ) : dateRange?.from ? (
+                  <span>{format(dateRange.from, "d MMM yyyy", { locale: id })}</span>
+                ) : (
+                  <span>Pilih tanggal awal dulu</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={dateRange?.to || dateRange?.from}
+                onSelect={handleEndDateChange}
+                locale={id}
+                disabled={(date) => {
+                  if (!dateRange?.from) return true;
+                  if (date < dateRange.from) return true;
+                  if (maxEndDate && date > maxEndDate) return true;
+                  return false;
+                }}
+                initialFocus
+              />
+              {dateRange?.from && (
+                <div className="p-3 border-t">
+                  <p className="text-xs text-muted-foreground text-center mb-2">
+                    Rentang: {format(dateRange.from, "d MMM", { locale: id })} - {maxEndDate ? format(maxEndDate, "d MMM yyyy", { locale: id }) : ""}
+                  </p>
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
-      {/* Clear all filters */}
+      {/* Tombol reset: hapus semua input pencarian & tanggal */}
       {hasActiveSearch && (
         <div className="mt-4 flex justify-end">
           <button
@@ -120,4 +225,3 @@ export function SearchSection({
     </motion.div>
   );
 }
-

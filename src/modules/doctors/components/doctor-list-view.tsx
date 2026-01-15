@@ -3,47 +3,67 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
-import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { DoctorScheduleData } from "../utils/constants";
 import { DoctorScheduleView } from "./doctor-schedule-view";
-import { DepartmentCard } from "./department-card";
-import { hasActiveFilters } from "../utils/helpers";
+import { PoliCard } from "./poli-card";
+import { formatDateRangeLabel, formatPoliLabel, hasActiveFilters } from "../utils/helpers";
 
-interface DepartmentStat {
+interface PoliStat {
   name: string;
   doctors: number;
   availableSlots: number;
 }
 
+/**
+ * Props untuk `DoctorListView`.
+ *
+ * Kegunaan:
+ * - Menentukan filter aktif (poli, nama, rentang tanggal).
+ * - Menentukan data yang ditampilkan:
+ *   - `filteredDoctors`: daftar dokter hasil filter (untuk mode "Hasil Pencarian")
+ *   - `poliStats`: ringkasan poli (untuk mode "Semua Poli")
+ */
 interface DoctorListViewProps {
-  selectedDepartment: string | null;
+  /** Nama poli yang sedang dipilih (kalau ada). */
+  selectedPoli: string | null;
+  /** Kata kunci pencarian nama dokter. */
   searchDoctor: string;
-  searchDate: Date | undefined;
+  /** Rentang tanggal pencarian (from/to). */
+  dateRange: DateRange | undefined;
+  /** Flag untuk memaksa tampilkan daftar dokter walau tidak ada filter. */
   showAllDoctors: boolean;
+  /** Data dokter hasil filter (sudah siap untuk UI). */
   filteredDoctors: DoctorScheduleData[];
-  departmentStats: DepartmentStat[];
-  onDoctorSelect: (doctor: DoctorScheduleData) => void;
-  onDepartmentSelect: (department: string) => void;
+  /** Ringkasan poli (jumlah dokter + total slot tersedia). */
+  poliStats: PoliStat[];
+  /** Handler saat user memilih kartu poli. */
+  onPoliSelect: (poli: string) => void;
 }
 
-// onDoctorSelect is kept for backward compatibility but not used in the new design
-
+/**
+ * Menampilkan konten utama untuk modul Jadwal Dokter (bagian kanan):
+ * - Jika ada filter aktif / mode tampil semua dokter: tampilkan daftar kartu dokter + jadwal.
+ * - Jika tidak ada filter: tampilkan grid kartu poli sebagai pintu masuk pemilihan poli.
+ */
 export function DoctorListView({
-  selectedDepartment,
+  selectedPoli,
   searchDoctor,
-  searchDate,
+  dateRange,
   showAllDoctors,
   filteredDoctors,
-  departmentStats,
-  onDoctorSelect,
-  onDepartmentSelect,
+  poliStats,
+  onPoliSelect,
 }: DoctorListViewProps) {
-  const hasFilters = hasActiveFilters(selectedDepartment, searchDoctor, searchDate);
+  // Menentukan apakah ada filter yang aktif (dipakai untuk mengubah mode tampilan).
+  const hasFilters = hasActiveFilters(selectedPoli, searchDoctor, dateRange);
+  // Mode tampilan: list dokter jika ada filter aktif atau user menekan "Semua Dokter".
   const showDoctorsList = hasFilters || showAllDoctors;
   
-  // State untuk menyimpan selectedDay untuk setiap doctor
+  // Menyimpan pilihan hari (tab) per dokter, supaya setiap kartu dokter bisa memilih hari sendiri.
   const [selectedDays, setSelectedDays] = useState<Record<string, number>>({});
   
+  // Update pilihan hari untuk dokter tertentu.
   const handleDaySelect = (doctorId: string, dayIndex: number) => {
     setSelectedDays((prev) => ({
       ...prev,
@@ -61,47 +81,49 @@ export function DoctorListView({
       className="flex flex-col"
     >
       <div className="space-y-6 pb-6">
-        {/* Header */}
+        {/* Bagian header: menampilkan chip filter yang aktif + judul & ringkasan jumlah data */}
         <div className="space-y-4">
           <div>
-            {selectedDepartment && (
+            {selectedPoli && (
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
-                  {selectedDepartment}
+                  {formatPoliLabel(selectedPoli)}
                 </span>
               </div>
             )}
-            {(searchDoctor || searchDate) && (
+            {(searchDoctor || dateRange?.from) && (
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 {searchDoctor && (
                   <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
                     Nama: {searchDoctor}
                   </span>
                 )}
-                {searchDate && (
+                {dateRange?.from && (
                   <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
-                    Tanggal: {format(searchDate, "PPP")}
+                    Tanggal: {formatDateRangeLabel(dateRange)}
                   </span>
                 )}
               </div>
             )}
             <h1 className="text-3xl font-bold leading-tight mb-3">
-              {showDoctorsList ? "Hasil Pencarian" : "Semua Departemen"}
+              {showDoctorsList ? "Hasil Pencarian" : "Semua Spesialis"}
             </h1>
             <p className="text-base text-muted-foreground">
               {showDoctorsList
                 ? `${filteredDoctors.length} dokter ditemukan${
-                    selectedDepartment && !searchDoctor && !searchDate
-                      ? " di departemen ini"
+                    selectedPoli && !searchDoctor && !dateRange?.from
+                      ? " di spesialis ini"
                       : ""
-                  }${(searchDoctor || searchDate) ? " sesuai pencarian Anda" : ""}`
-                : `${departmentStats.length} departemen tersedia`}
+                  }${(searchDoctor || dateRange?.from) ? " sesuai pencarian Anda" : ""}`
+                : `${poliStats.length} spesialis tersedia`}
             </p>
           </div>
           <Separator />
         </div>
 
-        {/* Content */}
+        {/* Konten utama:
+            - Kalau ada filter / mode tampil semua dokter: tampilkan list kartu dokter + jadwal
+            - Kalau tidak: tampilkan grid kartu poli */}
         {showDoctorsList ? (
           <div className="space-y-4">
             {filteredDoctors.length === 0 ? (
@@ -123,14 +145,14 @@ export function DoctorListView({
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {departmentStats.map((dept, index) => (
-              <DepartmentCard
-                key={dept.name}
-                name={dept.name}
-                doctors={dept.doctors}
-                availableSlots={dept.availableSlots}
+            {poliStats.map((poli, index) => (
+              <PoliCard
+                key={poli.name}
+                name={poli.name}
+                doctors={poli.doctors}
+                availableSlots={poli.availableSlots}
                 index={index}
-                onClick={() => onDepartmentSelect(dept.name)}
+                onClick={() => onPoliSelect(poli.name)}
               />
             ))}
           </div>
@@ -139,4 +161,3 @@ export function DoctorListView({
     </motion.div>
   );
 }
-
