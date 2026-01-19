@@ -23,7 +23,7 @@ export function BookingBySpecializationCard({
     >
       <Card className="h-full">
         <CardHeader className="border-b">
-          <CardTitle>Detail Booking per Spesialis</CardTitle>
+          <CardTitle className="pt-2 pb-3">Detail Booking per Spesialis</CardTitle>
           {/* <CardDescription>
             Membutuhkan sumber data booking/appointments. Saat ini belum tersedia di codebase, jadi nilai 0.
           </CardDescription> */}
