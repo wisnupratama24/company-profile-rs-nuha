@@ -3,9 +3,7 @@ import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { cn } from "@/lib/utils";
 
-export interface MarkdownComponents extends Components {
-  // Allow extending with custom components
-}
+export type MarkdownComponents = Components;
 
 const defaultMarkdownComponents: Components = {
   h1: ({ children, className, ...props }) => (

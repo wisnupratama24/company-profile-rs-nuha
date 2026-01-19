@@ -14,7 +14,7 @@ interface FilterItem {
   label: string;
   subtitle?: string;
   // Boleh membawa properti tambahan (contoh: `doctorData`) untuk kebutuhan `renderItem` custom.
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

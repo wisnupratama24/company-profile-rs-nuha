@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Filter } from "lucide-react";
 import { format } from "date-fns";
@@ -11,7 +11,7 @@ import { FilterSection } from "./components/filter-section";
 import { SearchSection } from "./components/search-section";
 import { DoctorListView } from "./components/doctor-list-view";
 import { DoctorScheduleView } from "./components/doctor-schedule-view";
-import { formatPoliLabel, getAvailableSlotsCount, hasActiveFilters } from "./utils/helpers";
+import { formatPoliLabel, getAvailableSlotsCount } from "./utils/helpers";
 import { useDoctors } from "./hooks/use-doctors";
 
 /**
@@ -122,15 +122,10 @@ function DoctorSchedule() {
     setSelectedDay(0);
   }, [resetFilterStates]);
 
-  // Saat filter/pencarian berubah, batalkan pilihan dokter (kalau ada),
-  // supaya UI kembali menampilkan list hasil (bukan "terkunci" di detail 1 dokter).
-  useEffect(() => {
-    if (hasActiveFilters(selectedPoli, searchDoctor, dateRange)) {
-      setSelectedDoctor(null);
-      setSelectedDay(0);
-      resetFilterStates();
-    }
-  }, [selectedPoli, searchDoctor, dateRange, resetFilterStates]);
+  // NOTE:
+  // Sebelumnya ada `useEffect` yang melakukan `setState` ketika filter berubah.
+  // Itu memicu rule `react-hooks/set-state-in-effect` dan juga rawan cascading renders.
+  // Sekarang reset pilihan dokter dilakukan langsung di event handler saat filter diubah.
 
   return (
     <div className="max-w-7xl w-full">
@@ -161,10 +156,14 @@ function DoctorSchedule() {
           dateRange={dateRange}
           onSearchDoctorChange={(value) => {
             resetFilterStates();
+            setSelectedDoctor(null);
+            setSelectedDay(0);
             setSearchDoctor(value);
           }}
           onDateRangeChange={(range) => {
             resetFilterStates();
+            setSelectedDoctor(null);
+            setSelectedDay(0);
             setDateRange(range);
           }}
           onClearAll={clearAllFilters}
@@ -193,6 +192,8 @@ function DoctorSchedule() {
                 setShowAllDoctors(false);
               } else {
                 setSelectedPoli(id);
+                setSelectedDoctor(null);
+                setSelectedDay(0);
                 resetFilterStates();
               }
             }}
