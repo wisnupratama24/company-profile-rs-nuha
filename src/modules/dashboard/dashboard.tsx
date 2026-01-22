@@ -58,7 +58,7 @@ import {
    }, [dataUpdatedAt]);
  
    return (
-     <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-8">
+    <div className="max-w-7xl w-full">
       <DashboardHeader todayLabel={todayLabel} lastUpdatedLabel={lastUpdatedLabel} />
  
       {error ? (
