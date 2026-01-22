@@ -8,6 +8,7 @@ import { DoctorScheduleData } from "../utils/constants";
 import { DoctorScheduleView } from "./doctor-schedule-view";
 import { PoliCard } from "./poli-card";
 import { formatDateRangeLabel, formatPoliLabel, hasActiveFilters } from "../utils/helpers";
+import { useDoctorAvatars } from "../hooks/use-doctor-avatars";
 
 interface PoliStat {
   name: string;
@@ -70,6 +71,12 @@ export function DoctorListView({
       [doctorId]: dayIndex,
     }));
   };
+
+  // Prefetch/batch fetch avatar untuk semua dokter yang sedang ditampilkan (jalan paralel).
+  const { avatarSrcByDoctorId, isLoadingByDoctorId } = useDoctorAvatars(
+    showDoctorsList ? filteredDoctors : [],
+    selectedDays
+  );
 
   return (
     <motion.div
@@ -139,6 +146,9 @@ export function DoctorListView({
                   doctor={doctor}
                   selectedDay={selectedDays[doctor.doctor.id] ?? 0}
                   onDaySelect={(dayIndex) => handleDaySelect(doctor.doctor.id, dayIndex)}
+                  avatarSrc={avatarSrcByDoctorId[doctor.doctor.id] ?? null}
+                  isLoadingAvatar={isLoadingByDoctorId[doctor.doctor.id] ?? false}
+                  disableAvatarFetch
                 />
               ))
             )}

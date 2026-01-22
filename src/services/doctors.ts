@@ -10,6 +10,7 @@ import {
 
 // API Constants
 const LAPORAN_VIEW_ID = 123;
+const DOCTOR_PROFILE_VIEW_ID = 107;
 const DEFAULT_LIMIT = 1000;
 
 export interface FetchDoctorScheduleParams {
@@ -19,6 +20,33 @@ export interface FetchDoctorScheduleParams {
   endDate?: Date;
   id_dokter?: number;
   kode_spesialis?: string;
+}
+
+export interface DoctorProfileApiItem {
+  id_dokter: number;
+  image?: string | null;
+}
+
+export interface DoctorProfileApiResponse {
+  data: {
+    list: DoctorProfileApiItem[];
+    headers: { label: string; value: string }[];
+    parameters: {
+      id_dokter: number | null;
+      kode_spesialis: string | null;
+      filter_tanggal_awal: string;
+      filter_tanggal_akhir: string;
+    };
+    meta_data: {
+      count: number;
+      pages: number;
+      limit: number;
+    };
+  };
+  meta_data: {
+    status: number;
+    message: string;
+  };
 }
 
 /**
@@ -240,6 +268,45 @@ export async function fetchDoctorScheduleById(
     return doctors.find((d) => d.doctor.id === String(id)) || null;
   } catch (error) {
     console.error("Error fetching doctor schedule by ID:", error);
+    throw error;
+  }
+}
+
+/**
+ * Fetch a single doctor's avatar (base64 image string) by doctor ID.
+ *
+ * Notes:
+ * - Uses a different `id_laporan_view` than schedules.
+ * - The API requires date filters; we default to "today" when not provided.
+ */
+export async function fetchDoctorAvatarBase64(
+  id_dokter: number,
+  date?: Date
+): Promise<string | null> {
+  try {
+    const d = date || new Date();
+
+    const response = await nuhaApiClient.post<DoctorProfileApiResponse>(
+      "/open-api/emr/dynamic-view-report",
+      {
+        id_laporan_view: DOCTOR_PROFILE_VIEW_ID,
+        pages: 1,
+        limit: 10,
+        filter_tanggal_awal: formatDateForApi(d),
+        filter_tanggal_akhir: formatDateForApi(d),
+        id_dokter,
+        kode_spesialis: null,
+      }
+    );
+
+    if (response.data.meta_data.status !== 200) {
+      throw new Error(response.data.meta_data.message);
+    }
+
+    const item = response.data.data.list?.[0];
+    return item?.image ?? null;
+  } catch (error) {
+    console.error("Error fetching doctor avatar:", error);
     throw error;
   }
 }

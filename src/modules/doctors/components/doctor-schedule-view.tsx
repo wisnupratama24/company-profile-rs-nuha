@@ -9,6 +9,9 @@ import { id } from "date-fns/locale";
 import { DoctorScheduleData } from "../utils/constants";
 import { formatPoliLabel, getDateOnlyKey, getDayAvailableSlotsCount, parseDateOnlyLocal } from "../utils/helpers";
 import { useMemo } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useDoctorAvatar } from "../hooks/use-doctor-avatar";
+import { Spinner } from "@/components/ui/spinner";
 
 /**
  * Props untuk `DoctorScheduleView`.
@@ -25,6 +28,12 @@ interface DoctorScheduleViewProps {
   selectedDay?: number;
   /** Handler saat user memilih hari (tab). Jika tidak ada, tombol pilihan hari tidak ditampilkan. */
   onDaySelect?: (index: number) => void;
+  /** Optional override: avatar src (data URL) dari parent supaya fetch bisa dibatch/paralel. */
+  avatarSrc?: string | null;
+  /** Optional override: loading state avatar dari parent. */
+  isLoadingAvatar?: boolean;
+  /** Jika true, komponen tidak akan melakukan fetch avatar sendiri. */
+  disableAvatarFetch?: boolean;
 }
 
 /**
@@ -40,6 +49,9 @@ export function DoctorScheduleView({
   doctor,
   selectedDay = 0,
   onDaySelect,
+  avatarSrc: avatarSrcProp,
+  isLoadingAvatar: isLoadingAvatarProp,
+  disableAvatarFetch,
 }: DoctorScheduleViewProps) {
   // Urutkan jadwal berdasarkan tanggal (pakai parse lokal untuk menghindari efek timezone pada date-only string).
   const sortedSchedule = useMemo(() => {
@@ -53,6 +65,18 @@ export function DoctorScheduleView({
     ? getDayAvailableSlotsCount(selectedDayData)
     : 0;
   const hasMultipleDays = sortedSchedule.length > 1;
+
+  const doctorIdNumber = Number(doctor.doctor.id);
+  const avatarDate = selectedDayData ? parseDateOnlyLocal(selectedDayData.date) : new Date();
+
+  const shouldFetchAvatar = !disableAvatarFetch && avatarSrcProp === undefined;
+  const { data: avatarSrcFromQuery, isLoading: isLoadingAvatarFromQuery } = useDoctorAvatar(
+    shouldFetchAvatar && Number.isFinite(doctorIdNumber) ? doctorIdNumber : null,
+    avatarDate
+  );
+
+  const avatarSrc = avatarSrcProp ?? avatarSrcFromQuery ?? null;
+  const isLoadingAvatar = isLoadingAvatarProp ?? isLoadingAvatarFromQuery;
 
   // Membuat teks ringkasan tanggal (1 hari vs rentang hari) untuk header kartu.
   const getDateRangeDisplay = () => {
@@ -86,14 +110,17 @@ export function DoctorScheduleView({
         {/* Header kartu: poli + nama dokter + ringkasan tanggal & jumlah jadwal praktik */}
         <div className="space-y-4">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
-                {formatPoliLabel(doctor.doctor.specialization)}
-              </span>
-            </div>
-            <h2 className="text-2xl font-bold leading-tight mb-2">
-              {doctor.doctor.name}
-            </h2>
+            <div className="flex justify-between items-center gap-2">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
+                    {formatPoliLabel(doctor.doctor.specialization)}
+                  </span>
+                </div>
+                <h2 className="text-2xl font-bold leading-tight mb-2">
+                  {doctor.doctor.name}
+                </h2>
+              
             {doctor.schedule.length > 0 && (
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
@@ -107,6 +134,16 @@ export function DoctorScheduleView({
                 </div>
               </div>
             )}
+            </div>
+            <div className="flex items-center mr-8">
+                <Avatar className="size-23 rounded-lg">
+                  <AvatarImage src={avatarSrc ?? undefined} />
+                  <AvatarFallback className="rounded-lg">
+                    {isLoadingAvatar ? <Spinner /> : doctor.doctor.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            </div>
           </div>
         </div>
 
