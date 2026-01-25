@@ -161,17 +161,33 @@ export async function fetchDoctorSchedules(
     const startDate = params?.startDate || new Date();
     const endDate = params?.endDate || startDate;
     
-    const response = await nuhaApiClient.post<DoctorScheduleApiResponse>(
-      "/open-api/emr/dynamic-view-report",
-      {
-        id_laporan_view: LAPORAN_VIEW_ID,
-        pages: 1,
-        limit: DEFAULT_LIMIT,
-        filter_tanggal_awal: formatDateForApi(startDate),
-        filter_tanggal_akhir: formatDateForApi(endDate),
-        id_dokter: params?.id_dokter || null,
-        kode_spesialis: params?.kode_spesialis || null,
+    // Jika menggunakan gateway nuha
+    // const response = await nuhaApiClient.post<DoctorScheduleApiResponse>(
+    //   "/open-api/emr/dynamic-view-report",
+    //   {
+    //     id_laporan_view: LAPORAN_VIEW_ID,
+    //     pages: 1,
+    //     limit: DEFAULT_LIMIT,
+    //     filter_tanggal_awal: formatDateForApi(startDate),
+    //     filter_tanggal_akhir: formatDateForApi(endDate),
+    //     id_dokter: params?.id_dokter || null,
+    //     kode_spesialis: params?.kode_spesialis || null,
+    //   }
+    // );
+
+    // Jika menggunakan gateway sendiri
+    const response = await nuhaApiClient.get<DoctorScheduleApiResponse>(
+      "/dokter/jadwal-dokter", {
+        params : {
+          pages: 1,
+          limit: DEFAULT_LIMIT,
+          tanggal_awal: formatDateForApi(startDate),
+          tanggal_akhir: formatDateForApi(endDate),
+          id_dokter: params?.id_dokter || null,
+          kode_spesialis: params?.kode_spesialis || null,
+        }
       }
+      
     );
 
     if (response.data.meta_data.status !== 200) {
@@ -211,17 +227,34 @@ export async function fetchPolis(startDate?: Date, endDate?: Date): Promise<Poli
     const start = startDate || new Date();
     const end = endDate || start;
     
-    const response = await nuhaApiClient.post<DoctorScheduleApiResponse>(
-      "/open-api/emr/dynamic-view-report",
-      {
-        id_laporan_view: LAPORAN_VIEW_ID,
+    // Jika menggunakan gateway nuha
+    // const response = await nuhaApiClient.post<DoctorScheduleApiResponse>(
+    //   "/open-api/emr/dynamic-view-report",
+    //   {
+    //     id_laporan_view: LAPORAN_VIEW_ID,
+    //     pages: 1,
+    //     limit: DEFAULT_LIMIT,
+    //     filter_tanggal_awal: formatDateForApi(start),
+    //     filter_tanggal_akhir: formatDateForApi(end),
+    //     id_dokter: null,
+    //     kode_spesialis: null,
+    //   }
+    // );
+
+
+    // Jika menggunaka gateway sendiri
+    const response = await nuhaApiClient.get<DoctorScheduleApiResponse>(
+      "/dokter/jadwal-dokter",
+     {
+      params :  {
         pages: 1,
         limit: DEFAULT_LIMIT,
-        filter_tanggal_awal: formatDateForApi(start),
-        filter_tanggal_akhir: formatDateForApi(end),
+        tanggal_awal: formatDateForApi(start),
+        tanggal_akhir: formatDateForApi(end),
         id_dokter: null,
         kode_spesialis: null,
       }
+     }
     );
 
     if (response.data.meta_data.status !== 200) {
@@ -247,17 +280,33 @@ export async function fetchDoctorScheduleById(
     const start = startDate || new Date();
     const end = endDate || start;
     
-    const response = await nuhaApiClient.post<DoctorScheduleApiResponse>(
-      "/open-api/emr/dynamic-view-report",
+    // Jika menggunakan gateway nuha
+    // const response = await nuhaApiClient.post<DoctorScheduleApiResponse>(
+    //   "/open-api/emr/dynamic-view-report",
+    //   {
+    //     id_laporan_view: LAPORAN_VIEW_ID,
+    //     pages: 1,
+    //     limit: DEFAULT_LIMIT,
+    //     filter_tanggal_awal: formatDateForApi(start),
+    //     filter_tanggal_akhir: formatDateForApi(end),
+    //     id_dokter: id,
+    //     kode_spesialis: null,
+    //   }
+    // );
+
+     // Jika menggunaka gateway sendiri
+    const response = await nuhaApiClient.get<DoctorScheduleApiResponse>(
+      "/dokter/jadwal-dokter",
       {
-        id_laporan_view: LAPORAN_VIEW_ID,
-        pages: 1,
-        limit: DEFAULT_LIMIT,
-        filter_tanggal_awal: formatDateForApi(start),
-        filter_tanggal_akhir: formatDateForApi(end),
-        id_dokter: id,
-        kode_spesialis: null,
-      }
+        params :  {
+          pages: 1,
+          limit: DEFAULT_LIMIT,
+          tanggal_awal: formatDateForApi(start),
+          tanggal_akhir: formatDateForApi(end),
+          id_dokter: null,
+          kode_spesialis: null,
+        }
+       }
     );
 
     if (response.data.meta_data.status !== 200) {
@@ -286,16 +335,34 @@ export async function fetchDoctorAvatarBase64(
   try {
     const d = date || new Date();
 
-    const response = await nuhaApiClient.post<DoctorProfileApiResponse>(
-      "/open-api/emr/dynamic-view-report",
+
+    // Jika menggunakan gateway nuha
+    // const response = await nuhaApiClient.post<DoctorProfileApiResponse>(
+    //   "/open-api/emr/dynamic-view-report",
+    //   {
+    //     id_laporan_view: DOCTOR_PROFILE_VIEW_ID,
+    //     pages: 1,
+    //     limit: 10,
+    //     filter_tanggal_awal: formatDateForApi(d),
+    //     filter_tanggal_akhir: formatDateForApi(d),
+    //     id_dokter,
+    //     kode_spesialis: null,
+    //   }
+    // );
+
+
+    // jika menggunakan gateway sendiri
+    const response = await nuhaApiClient.get<DoctorProfileApiResponse>(
+      "/dokter/detail-jadwal-dokter",
       {
-        id_laporan_view: DOCTOR_PROFILE_VIEW_ID,
-        pages: 1,
-        limit: 10,
-        filter_tanggal_awal: formatDateForApi(d),
-        filter_tanggal_akhir: formatDateForApi(d),
-        id_dokter,
-        kode_spesialis: null,
+        params : {
+          pages: 1,
+          limit: 10,
+          tanggal_awal: formatDateForApi(d),
+          tanggal_akhir: formatDateForApi(d),
+          id_dokter,
+          kode_spesialis: null,
+        }
       }
     );
 

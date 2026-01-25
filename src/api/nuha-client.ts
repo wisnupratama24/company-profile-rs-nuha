@@ -4,7 +4,7 @@ import axios, { AxiosInstance, AxiosError } from "axios";
 const NUHA_API_BASE_URL = process.env.NEXT_PUBLIC_NUHA_API_URL || "https://integrations.nuha.care";
 
 // Nuha API Token
-const NUHA_API_TOKEN = process.env.NEXT_PUBLIC_NUHA_API_TOKEN || "QfDhyZq9jN8AnGRYq3Mgaw==:7iBdDo6/tugMnoC/JZyBwMiAk9Gro4YZZWrE0YlwCpgB6JdtKIcDGPqEJte5fB3lST6qzZrWMRGvulsaCbkV/g==";
+const NUHA_API_TOKEN = process.env.NEXT_PUBLIC_NUHA_API_TOKEN || "";
 
 // Create axios instance for Nuha API
 export const nuhaApiClient: AxiosInstance = axios.create({
@@ -13,6 +13,7 @@ export const nuhaApiClient: AxiosInstance = axios.create({
     "Content-Type": "application/json",
     "Authorization": `Bearer ${NUHA_API_TOKEN}`,
   },
+  withCredentials: false, // Set to false since we're using Bearer token auth
   timeout: 15000, // 15 seconds
 });
 

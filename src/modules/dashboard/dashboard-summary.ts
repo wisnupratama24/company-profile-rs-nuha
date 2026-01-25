@@ -25,18 +25,12 @@ function formatDateYYYYMMDDLocal(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-/**
- * Dummy dulu.
- *
- * Kalau endpoint sudah siap, ubah function ini jadi call API, contohnya:
- *
- *   import { apiClient } from "@/api/client";
- *   const date = formatDateYYYYMMDDLocal(params?.date ?? new Date());
- *   const res = await apiClient.get<DashboardSummaryResponse>("/dashboard/summary", { params: { date } });
- *   return res.data;
- */
+
+// import { apiClient } from "@/api/client";
+import nuhaApiClient from "@/api/nuha-client";
+
 export async function fetchDashboardSummary(params?: { date?: Date }): Promise<DashboardSummaryResponse> {
-  const date = formatDateYYYYMMDDLocal(params?.date ?? new Date());
+  // const date = formatDateYYYYMMDDLocal(params?.date ?? new Date());
   const generatedAt = new Date().toISOString();
 
   // ---- dummy dataset (silakan ubah angka/isi seenaknya) ----
@@ -112,6 +106,18 @@ export async function fetchDashboardSummary(params?: { date?: Date }): Promise<D
       doctorList: [{ id: "105", name: "dr. Eka" }],
     },
   ];
+
+  const date = formatDateYYYYMMDDLocal(params?.date ?? new Date());
+  // const res = await apiClient.get<DashboardSummaryResponse>("/dashboard/stats", { params: { date } });
+  // return res.data;
+
+  const response = await nuhaApiClient.get<DashboardSummaryResponse>(
+    "/dashboard/stats", {
+      params: { date }
+    }
+  );
+
+  console.log({response})
 
   return {
     date,
