@@ -86,6 +86,7 @@ export function BookingChartsSection({
   bookingByDoctor: BookingByDoctorRow[];
   bookingBySpecialization: BookingBySpecializationRow[];
 }) {
+  
   const topDoctors = useMemo(() => {
     const rows = topNByBookings(
       bookingByDoctor.map((r) => ({ name: r.doctorName, bookings: r.bookings })),
