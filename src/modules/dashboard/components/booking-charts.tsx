@@ -52,7 +52,7 @@ function BookingBarChart({
           tickLine={false}
           axisLine={false}
           tickMargin={10}
-          tickFormatter={(v) => truncateLabel(String(v), 14)}
+          tickFormatter={(v) => truncateLabel(String(v), 13)}
         />
         <YAxis
           dataKey="bookings"
@@ -90,7 +90,7 @@ export function BookingChartsSection({
   const topDoctors = useMemo(() => {
     const rows = topNByBookings(
       bookingByDoctor.map((r) => ({ name: r.doctorName, bookings: r.bookings })),
-      6
+      5
     );
     return toChartData(rows);
   }, [bookingByDoctor]);
@@ -98,7 +98,7 @@ export function BookingChartsSection({
   const leastDoctors = useMemo(() => {
     const rows = bottomNByBookings(
       bookingByDoctor.map((r) => ({ name: r.doctorName, bookings: r.bookings })),
-      6
+      5
     );
     return toChartData(rows);
   }, [bookingByDoctor]);
@@ -106,7 +106,7 @@ export function BookingChartsSection({
   const topSpecializations = useMemo(() => {
     const rows = topNByBookings(
       bookingBySpecialization.map((r) => ({ name: r.specialization, bookings: r.bookings })),
-      6
+      5
     );
     return toChartData(rows);
   }, [bookingBySpecialization]);
@@ -114,7 +114,7 @@ export function BookingChartsSection({
   const leastSpecializations = useMemo(() => {
     const rows = bottomNByBookings(
       bookingBySpecialization.map((r) => ({ name: r.specialization, bookings: r.bookings })),
-      6
+      5
     );
     return toChartData(rows);
   }, [bookingBySpecialization]);
@@ -129,8 +129,7 @@ export function BookingChartsSection({
 
   return (
     <Tabs defaultValue="top" className="w-full">
-      <div className="flex items-center justify-between gap-3 pb-2">
-        <div className="text-sm text-muted-foreground">Booking (hari ini)</div>
+      <div className="flex items-center justify-center gap-3 pb-2">
         <TabsList>
           <TabsTrigger value="top">Top 5</TabsTrigger>
           <TabsTrigger value="least">Least 5</TabsTrigger>

@@ -1,6 +1,6 @@
  "use client";
 
- import { useMemo } from "react";
+ import { useMemo, useState } from "react";
  import { format } from "date-fns";
  import { id } from "date-fns/locale";
 import { Stethoscope } from "lucide-react";
@@ -17,9 +17,9 @@ import { useDashboardSummary } from "./hooks/use-dashboard-summary";
 import { formatNumber } from "./utils/helpers";
  
  export default function Dashboard() {
-   const today = useMemo(() => new Date(), []);
+   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
  
-  const { data, isLoading, error, dataUpdatedAt, refetch } = useDashboardSummary(today);
+  const { data, isLoading, error, dataUpdatedAt, refetch } = useDashboardSummary(selectedDate);
 
   const totals = data?.totals;
   const totalDoctorsPracticingToday = totals?.doctorsPracticing ?? 0;
@@ -27,7 +27,10 @@ import { formatNumber } from "./utils/helpers";
   const totalDoctorsOnLeaveToday = totals?.doctorsOnLeave ?? 0;
   const totalDoctorsOnDate = totals?.doctorsTotal ?? 0;
  
-   const todayLabel = useMemo(() => format(today, "EEEE, dd MMM yyyy", { locale: id }), [today]);
+   const todayLabel = useMemo(
+     () => format(selectedDate, "EEEE, dd MMM yyyy", { locale: id }),
+     [selectedDate]
+   );
    const lastUpdatedLabel = useMemo(() => {
      if (!dataUpdatedAt) return null;
      return format(new Date(dataUpdatedAt), "HH:mm:ss", { locale: id });
@@ -35,7 +38,12 @@ import { formatNumber } from "./utils/helpers";
  
    return (
     <div className="max-w-7xl w-full">
-      <DashboardHeader todayLabel={todayLabel} lastUpdatedLabel={lastUpdatedLabel} />
+      <DashboardHeader
+        selectedDate={selectedDate}
+        onDateChange={setSelectedDate}
+        todayLabel={todayLabel}
+        lastUpdatedLabel={lastUpdatedLabel}
+      />
  
       {error ? (
         <ErrorBanner

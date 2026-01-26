@@ -14,7 +14,7 @@ export const nuhaApiClient: AxiosInstance = axios.create({
     "Authorization": `Bearer ${NUHA_API_TOKEN}`,
   },
   withCredentials: false, // Set to false since we're using Bearer token auth
-  timeout: 15000, // 15 seconds
+  // timeout: 15000, // 15 seconds
 });
 
 // Response interceptor

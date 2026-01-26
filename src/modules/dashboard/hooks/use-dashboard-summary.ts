@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { type DashboardSummaryResponse, fetchDashboardSummary } from "../dashboard-summary";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { type DashboardSummaryResponse, fetchDashboardSummary, syncDashboardData } from "../dashboard-summary";
 
 function formatDateYYYYMMDDLocal(date: Date): string {
   const y = date.getFullYear();
@@ -18,3 +18,8 @@ export function useDashboardSummary(date: Date) {
   });
 }
 
+export function useSyncDashboardData() {
+  return useMutation({
+    mutationFn: () => syncDashboardData(),
+  });
+}

@@ -37,3 +37,8 @@ export async function fetchDashboardSummary(params?: { date?: Date }): Promise<D
   return response.data;
 }
 
+export async function syncDashboardData(): Promise<void> {
+  const response = await nuhaApiClient.post("/dashboard/sync-all");
+  return response.data;
+
+}
