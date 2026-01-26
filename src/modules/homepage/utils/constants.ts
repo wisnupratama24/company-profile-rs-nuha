@@ -57,7 +57,6 @@ export const FEATURES: FeatureItem[] = [
     description: "Layanan medis tersedia setiap hari, 24 jam non-stop untuk kebutuhan darurat Anda.",
     icon: Clock,
     gradientClass: "bg-gradient-to-br from-blue-500/20 to-purple-500/20",
-    className: "md:col-span-2",
   },
   {
     title: "Tim Dokter Profesional",
@@ -88,7 +87,6 @@ export const FEATURES: FeatureItem[] = [
     description: "Rumah sakit terakreditasi dengan standar internasional untuk kualitas pelayanan.",
     icon: Award,
     gradientClass: "bg-gradient-to-br from-yellow-500/20 to-amber-500/20",
-    className: "md:col-span-2",
   },
 ];
 
