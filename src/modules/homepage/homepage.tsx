@@ -5,7 +5,6 @@ import {
   StatsSection,
   FeaturesSection,
   ServicesSection,
-  ContactSection,
 } from "./components";
 
 function Homepage() {
@@ -15,7 +14,6 @@ function Homepage() {
       <StatsSection />
       <FeaturesSection />
       <ServicesSection />
-      <ContactSection />
     </div>
   );
 }

@@ -100,6 +100,7 @@ export interface ServiceItem {
   title: string;
   description: string;
   link: string;
+  image: string;
 }
 
 export const SERVICES: ServiceItem[] = [
@@ -107,31 +108,37 @@ export const SERVICES: ServiceItem[] = [
     title: "Rawat Jalan",
     description: "Konsultasi dengan dokter spesialis untuk berbagai keluhan kesehatan. Booking jadwal kunjungan dengan mudah melalui sistem online.",
     link: "/service",
+    image: "/homepage/rawat-jalan.png",
   },
   {
     title: "Rawat Inap",
     description: "Fasilitas rawat inap lengkap dengan perawatan intensif oleh tim medis profesional 24/7.",
     link: "/service",
+    image: "/homepage/rawat-inap.png",
   },
   {
     title: "Unit Gawat Darurat",
     description: "Layanan gawat darurat 24 jam dengan tim medis siap siaga untuk penanganan cepat dan tepat.",
     link: "/service",
+    image: "/homepage/ugd.png",
   },
   {
     title: "Laboratorium",
     description: "Fasilitas laboratorium lengkap dengan teknologi modern untuk pemeriksaan diagnostik yang akurat.",
     link: "/service",
+    image: "/homepage/lab.png",
   },
   {
     title: "Radiologi",
     description: "Pemeriksaan radiologi dengan peralatan canggih seperti CT Scan, MRI, dan USG untuk diagnosis yang tepat.",
     link: "/service",
+    image: "/homepage/rad.png",
   },
   {
     title: "Fisioterapi",
     description: "Layanan fisioterapi dan rehabilitasi medis untuk pemulihan fungsi tubuh optimal.",
     link: "/service",
+    image: "/homepage/fisio.png",
   },
 ];
 
@@ -139,38 +146,3 @@ export const SERVICES_SECTION = {
   title: "Layanan Kami",
   description: "Berbagai layanan kesehatan lengkap untuk kebutuhan Anda",
 } as const;
-
-// Contact Section
-export interface ContactItem {
-  title: string;
-  icon: LucideIcon;
-  primary: string;
-  secondary?: string;
-}
-
-export const CONTACTS: ContactItem[] = [
-  {
-    title: "Telepon",
-    icon: Phone,
-    primary: "(021) 1234-5678",
-    secondary: "Emergency: (021) 1234-9999",
-  },
-  {
-    title: "Email",
-    icon: Mail,
-    primary: "info@rsnuha.com",
-    secondary: "customer.service@rsnuha.com",
-  },
-  {
-    title: "Alamat",
-    icon: MapPin,
-    primary: "Jl. Kesehatan No. 123",
-    secondary: "Jakarta Selatan, DKI Jakarta 12345",
-  },
-];
-
-export const CONTACT_SECTION = {
-  title: "Hubungi Kami",
-  description: "Kami siap membantu Anda 24/7",
-} as const;
-
