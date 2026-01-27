@@ -31,7 +31,7 @@ export async function fetchDashboardSummary(params?: { date?: Date }): Promise<D
   const date = formatDateYYYYMMDDLocal(params?.date ?? new Date());
   const response = await nuhaApiClient.get<DashboardSummaryResponse>(
     "/dashboard/stats", {
-      params: { date }
+      params: { tanggal:date }
     }
   );
   return response.data;
