@@ -3,7 +3,7 @@ import {
   DoctorScheduleData,
   DoctorScheduleApiResponse,
   DoctorScheduleApiItem,
-  Poli,
+  Spesialis,
 } from "@/modules/doctors/utils/constants";
 // NOTE: We intentionally avoid sending a timezone offset (+07, etc) in the payload.
 // The API behaves best when we send UTC ISO strings (...Z) derived from a local date.
@@ -14,7 +14,7 @@ const DOCTOR_PROFILE_VIEW_ID = 107;
 const DEFAULT_LIMIT = 1000;
 
 export interface FetchDoctorScheduleParams {
-  poli?: string;
+  spesialis?: string;
   search?: string;
   startDate?: Date;
   endDate?: Date;
@@ -120,7 +120,7 @@ function transformApiResponse(items: DoctorScheduleApiItem[]): DoctorScheduleDat
         id: String(doctor.id_dokter),
         name: doctor.nama_dokter,
         specialization: doctor.nama_spesialis,
-        poliCode: doctor.kode_spesialis,
+        spesialisCode: doctor.kode_spesialis,
       },
       schedule: scheduleDays,
     };
@@ -128,22 +128,22 @@ function transformApiResponse(items: DoctorScheduleApiItem[]): DoctorScheduleDat
 }
 
 /**
- * Extract unique polis from API response
+ * Extract unique spesialises from API response
  */
-function extractPolis(items: DoctorScheduleApiItem[]): Poli[] {
-  const poliMap = new Map<string, { name: string; doctorIds: Set<number> }>();
+function extractSpesialis(items: DoctorScheduleApiItem[]): Spesialis[] {
+  const spesialisMap = new Map<string, { name: string; doctorIds: Set<number> }>();
 
   items.forEach((item) => {
-    if (!poliMap.has(item.kode_spesialis)) {
-      poliMap.set(item.kode_spesialis, {
+    if (!spesialisMap.has(item.kode_spesialis)) {
+      spesialisMap.set(item.kode_spesialis, {
         name: item.nama_spesialis,
         doctorIds: new Set(),
       });
     }
-    poliMap.get(item.kode_spesialis)!.doctorIds.add(item.id_dokter);
+    spesialisMap.get(item.kode_spesialis)!.doctorIds.add(item.id_dokter);
   });
 
-  return Array.from(poliMap.entries()).map(([code, data]) => ({
+  return Array.from(spesialisMap.entries()).map(([code, data]) => ({
     code,
     name: data.name,
     doctorCount: data.doctorIds.size,
@@ -196,10 +196,10 @@ export async function fetchDoctorSchedules(
 
     let doctors = transformApiResponse(response.data.data.list);
 
-    // Client-side filter by poli name (if API doesn't support it directly)
-    if (params?.poli) {
+    // Client-side filter by spesialis name (if API doesn't support it directly)
+    if (params?.spesialis) {
       doctors = doctors.filter(
-        (d) => d.doctor.specialization.toLowerCase() === params.poli!.toLowerCase()
+        (d) => d.doctor.specialization.toLowerCase() === params.spesialis!.toLowerCase()
       );
     }
 
@@ -219,10 +219,10 @@ export async function fetchDoctorSchedules(
 }
 
 /**
- * Fetch polis from doctor schedules
- * TODO: Replace with dedicated poli API when available
+ * Fetch spesialis from doctor schedules
+ * TODO: Replace with dedicated spesialis API when available
  */
-export async function fetchPolis(startDate?: Date, endDate?: Date): Promise<Poli[]> {
+export async function fetchSpesialis(startDate?: Date, endDate?: Date): Promise<Spesialis[]> {
   try {
     const start = startDate || new Date();
     const end = endDate || start;
@@ -261,9 +261,9 @@ export async function fetchPolis(startDate?: Date, endDate?: Date): Promise<Poli
       throw new Error(response.data.meta_data.message);
     }
 
-    return extractPolis(response.data.data.list);
+    return extractSpesialis(response.data.data.list);
   } catch (error) {
-    console.error("Error fetching polis:", error);
+    console.error("Error fetching spesialis:", error);
     throw error;
   }
 }

@@ -33,16 +33,16 @@ export function toTitleCaseWords(input: string): string {
 }
 
 /**
- * Memformat nama poli untuk tampilan UI:
- * - Selalu diawali "Poli"
+ * Memformat nama spesialis untuk tampilan UI:
+ * - Selalu diawali "spesialis"
  * - Nama diubah menjadi Camel/Title Case
- * - Jika input sudah diawali "poli", prefix tidak digandakan
+ * - Jika input sudah diawali "spesialis", prefix tidak digandakan
  */
-export function formatPoliLabel(poliName: string): string {
-  const raw = (poliName ?? "").trim();
+export function formatSpesialisLabel(spesialisName: string): string {
+  const raw = (spesialisName ?? "").trim();
   if (!raw) return "Spesialis";
 
-  // Hilangkan prefix "poli" kalau sudah ada (case-insensitive) agar tidak dobel.
+  // Hilangkan prefix "Spesialis" kalau sudah ada (case-insensitive) agar tidak dobel.
   const withoutPrefix = raw.replace(/^\s*poli\s+/i, "").trim();
   const formatted = toTitleCaseWords(withoutPrefix);
 
@@ -106,10 +106,10 @@ export function formatDateRangeLabel(dateRange: DateRange | undefined): string |
  * Dipakai untuk menampilkan tombol "Reset/Clear filter" atau indikator filter aktif.
  */
 export function hasActiveFilters(
-  selectedPoli: string | null,
+  selectedSpesialis: string | null,
   searchDoctor: string,
   dateRange: DateRange | undefined
 ): boolean {
-  return !!(selectedPoli || searchDoctor.trim() || dateRange?.from);
+  return !!(selectedSpesialis || searchDoctor.trim() || dateRange?.from);
 }
 

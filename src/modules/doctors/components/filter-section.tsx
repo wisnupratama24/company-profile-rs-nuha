@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronUp, Filter, ArrowRight } from "lucide-react";
 
 /**
- * Item filter generik yang ditampilkan di sidebar (misalnya: poli atau dokter).
+ * Item filter generik yang ditampilkan di sidebar (misalnya: spesialis atau dokter).
  * `subtitle` opsional untuk teks tambahan (misalnya spesialisasi dokter).
  */
 interface FilterItem {
@@ -21,12 +21,12 @@ interface FilterItem {
  * Komponen panel filter yang bisa di-collapse.
  *
  * Kegunaan:
- * - Dipakai ulang untuk panel "Poli" dan "Dokter" di sidebar.
+ * - Dipakai ulang untuk panel "Spesialis" dan "Dokter" di sidebar.
  * - Menampilkan tombol "Semua ..." (opsional), daftar item, state loading, dan highlight item terpilih.
  * - Mendukung render item custom via `renderItem` bila UI list perlu bentuk khusus.
  */
 interface FilterSectionProps {
-  /** Judul panel (mis. "Poli", "Dokter"). */
+  /** Judul panel (mis. "Spesialis", "Dokter"). */
   title: string;
   /** Ikon opsional di header panel. Kalau tidak diisi, default pakai ikon Filter. */
   icon?: React.ReactNode;
@@ -36,7 +36,7 @@ interface FilterSectionProps {
   selectedId: string | null;
   /** Handler saat user memilih item / memilih "Semua" (kirim `null`). */
   onSelect: (id: string | null) => void;
-  /** Label tombol "Semua" (mis. "Semua Poli", "Semua Dokter"). */
+  /** Label tombol "Semua" (mis. "Semua Spesialis", "Semua Dokter"). */
   allLabel: string;
   /** State buka/tutup panel. */
   isOpen: boolean;
