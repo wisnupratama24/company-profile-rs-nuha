@@ -2,45 +2,31 @@
 
 ## Setup
 
-1. **Set your API endpoint** in `.env.local`:
-   ```
-   NEXT_PUBLIC_API_URL=https://your-api-endpoint.com/api
-   ```
+Tidak ada “general API base URL” di layer ini.
 
-2. **Or modify directly** in `src/api/client.ts`:
-   ```typescript
-   const API_BASE_URL = "https://your-api-endpoint.com/api";
-   ```
+Yang ada adalah helper client-side untuk memanggil route handler internal Next.js:
+
+- `POST /api/nuha/proxy` (server-side proxy ke Nuha / local gateway)
 
 ## Files
 
-- `client.ts` - Axios client configuration with interceptors
-- `index.ts` - Exports
+- `client.ts` - helper `nuhaProxyRequest()` untuk call `/api/nuha/proxy`
+- `index.ts` - exports
 
 ## Usage
 
-The API client is automatically configured with:
-- Base URL from environment variable
-- JSON content type headers
-- Request/response interceptors for error handling
-- 10 second timeout
+Gunakan `nuhaProxyRequest()` di browser runtime agar token Nuha tetap server-side.
 
-## Authentication
-
-To add authentication, uncomment and modify the request interceptor in `client.ts`:
+Contoh:
 
 ```typescript
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-```
+import { nuhaProxyRequest } from "@/api/client";
 
+type MyResponse = { data: unknown };
+
+const data = await nuhaProxyRequest<MyResponse>({
+  method: "POST",
+  path: "/open-api/emr/dynamic-view-report",
+  body: { /* payload */ },
+});
+```
