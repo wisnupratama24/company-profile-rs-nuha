@@ -50,7 +50,7 @@ export function SpesialisCard({
             {doctors} dokter tersedia
           </p>
         </div>
-        <ArrowRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+        <ArrowRight className="h-5 w-5 text-muted-foreground" />
       </div>
       <Separator className="mb-3" />
       <div className="flex items-center gap-3 text-sm text-muted-foreground">
