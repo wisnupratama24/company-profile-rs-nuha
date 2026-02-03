@@ -9,7 +9,8 @@ export const LoaderOne = () => {
       repeat: Infinity,
       repeatType: "loop" as const,
       delay: x * 0.2,
-      ease: "easeInOut",
+      // cubic-bezier easeInOut
+      ease: [0.42, 0, 0.58, 1] as const,
     };
   };
   return (
@@ -55,7 +56,8 @@ export const LoaderTwo = () => {
       repeat: Infinity,
       repeatType: "loop" as const,
       delay: x * 0.2,
-      ease: "easeInOut",
+      // cubic-bezier easeInOut
+      ease: [0.42, 0, 0.58, 1] as const,
     };
   };
   return (
@@ -114,7 +116,8 @@ export const LoaderThree = () => {
         animate={{ pathLength: 1, fill: "var(--fill-final)" }}
         transition={{
           duration: 2,
-          ease: "easeInOut",
+          // cubic-bezier easeInOut
+          ease: [0.42, 0, 0.58, 1],
           repeat: Infinity,
           repeatType: "reverse",
         }}
@@ -128,16 +131,19 @@ export const LoaderFour = ({ text = "Loading..." }: { text?: string }) => {
   return (
     <div className="relative font-bold text-black [perspective:1000px] dark:text-white">
       <motion.span
-        animate={{
-          skew: [0, -40, 0],
-          scaleX: [1, 2, 1],
-        }}
+        animate={
+          {
+            skew: [0, -40, 0],
+            scaleX: [1, 2, 1],
+          } as any
+        }
         transition={{
           duration: 0.05,
           repeat: Infinity,
           repeatType: "reverse",
           repeatDelay: 2,
-          ease: "linear",
+          // cubic-bezier linear
+          ease: [0, 0, 1, 1],
           times: [0, 0.2, 0.5, 0.8, 1],
         }}
         className="relative z-20 inline-block"
@@ -155,7 +161,8 @@ export const LoaderFour = ({ text = "Loading..." }: { text?: string }) => {
           duration: 0.5,
           repeat: Infinity,
           repeatType: "reverse",
-          ease: "linear",
+          // cubic-bezier linear
+          ease: [0, 0, 1, 1],
           times: [0, 0.2, 0.5, 0.8, 1],
         }}
       >
@@ -172,7 +179,8 @@ export const LoaderFour = ({ text = "Loading..." }: { text?: string }) => {
           duration: 0.8,
           repeat: Infinity,
           repeatType: "reverse",
-          ease: "linear",
+          // cubic-bezier linear
+          ease: [0, 0, 1, 1],
           times: [0, 0.3, 0.6, 0.8, 1],
         }}
       >
@@ -190,21 +198,24 @@ export const LoaderFive = ({ text }: { text: string }) => {
           key={i}
           className="inline-block"
           initial={{ scale: 1, opacity: 0.5 }}
-          animate={{
-            scale: [1, 1.1, 1],
-            textShadow: [
-              "0 0 0 var(--shadow-color)",
-              "0 0 1px var(--shadow-color)",
-              "0 0 0 var(--shadow-color)",
-            ],
-            opacity: [0.5, 1, 0.5],
-          }}
+          animate={
+            {
+              scale: [1, 1.1, 1],
+              textShadow: [
+                "0 0 0 var(--shadow-color)",
+                "0 0 1px var(--shadow-color)",
+                "0 0 0 var(--shadow-color)",
+              ],
+              opacity: [0.5, 1, 0.5],
+            } as any
+          }
           transition={{
             duration: 0.5,
             repeat: Infinity,
             repeatType: "loop",
             delay: i * 0.05,
-            ease: "easeInOut",
+            // cubic-bezier easeInOut
+            ease: [0.42, 0, 0.58, 1],
             repeatDelay: 2,
           }}
         >

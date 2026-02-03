@@ -6,7 +6,43 @@ Ini adalah proyek [Next.js](https://nextjs.org) untuk membangun website company 
 
 ## 🚀 Status Saat Ini
 
-Proyek ini saat ini menggunakan **dummy data** untuk keperluan pengembangan dan demonstrasi. Service dokter (`src/services/doctors.ts`) menghasilkan jadwal dinamis berdasarkan tanggal saat ini, memungkinkan Anda untuk menguji aplikasi tanpa backend API. Ketika backend API siap, Anda dapat dengan mudah mengganti logika dummy data dengan panggilan API aktual menggunakan `apiClient` yang telah dikonfigurasi.
+Proyek ini sudah terintegrasi dengan **Nuha Integration API** untuk modul dokter:
+
+- **Jadwal dokter**: menggunakan endpoint `POST /open-api/emr/dynamic-view-report` dengan `id_laporan_view: 123` (lihat `src/services/doctors.ts`).
+- **Avatar dokter**: menggunakan endpoint yang sama dengan `id_laporan_view: 107`, difilter berdasarkan `id_dokter`, lalu field `image` (base64) dinormalisasi menjadi `data:image/...` untuk dipakai sebagai `src` avatar (lihat `src/services/doctors.ts` dan hooks di `src/modules/doctors/hooks/`).
+- **Fetch paralel**: pada tampilan list dokter, avatar dipanggil **paralel** (mis. 3 dokter = 3 request bareng) menggunakan TanStack Query `useQueries` untuk mempercepat render dan memanfaatkan caching.
+- **Token & proxy (aman untuk browser)**:
+  - Token Nuha ditangani server-side oleh `src/api/nuha-client.ts` (login/refresh + cache in-memory).
+  - Browser tidak call Nuha langsung; request browser diproxy lewat `POST /api/nuha/proxy` (route: `src/app/api/nuha/proxy/route.ts`).
+  - Browser jika butuh token untuk axios client akan mengambilnya lewat `GET /api/nuha/auth/token` (route: `src/app/api/nuha/auth/token/route.ts`).
+
+### Environment Variables (Nuha)
+
+Untuk integrasi Nuha sekarang **token diambil dari login** (server-side), lalu otomatis **refresh** saat expired.
+
+Tambahkan di `.env.local`:
+
+```env
+# Mode backend yang dipakai service:
+# - nuha  -> panggil Nuha Integration API (token via login/refresh)
+# - local -> panggil gateway internal (token statik)
+NEXT_PUBLIC_BE_ENV=nuha
+
+# Base URL upstream (Nuha integrations atau gateway internal)
+NEXT_PUBLIC_NUHA_API_URL=https://integrations.nuha.care
+
+# Token statik untuk gateway internal (dipakai saat BE_ENV != "nuha")
+# NEXT_PUBLIC_NUHA_API_TOKEN="..."
+
+# Credential untuk login Nuha (SERVER ONLY - jangan pakai NEXT_PUBLIC_*)
+EMAIL=angga@nuha.care
+PASSWORD=123123123
+CLIENT_KEY=BWQ+NweCdWwGzIKNnL57pA==
+```
+
+> Catatan:
+> - **jangan** pakai `NEXT_PUBLIC_*` untuk `EMAIL/PASSWORD/CLIENT_KEY` (harus server-only).
+> - nilai yang dipakai di browser **wajib** `NEXT_PUBLIC_*` (contoh: `NEXT_PUBLIC_BE_ENV`, `NEXT_PUBLIC_NUHA_API_URL`).
 
 ---
 
