@@ -82,7 +82,6 @@ function DoctorScheduleView() {
               const findByName = details?.schedule.find(
                 (s) => s.day_name.toLowerCase() === day.toLowerCase()
               );
-              console.log("findByName", findByName);
               return (
                 <div key={i}>
                   <div className="flex justify-between mb-2">
