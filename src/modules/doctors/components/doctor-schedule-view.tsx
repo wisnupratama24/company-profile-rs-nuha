@@ -53,6 +53,9 @@ export function DoctorScheduleView({
   isLoadingAvatar: isLoadingAvatarProp,
   disableAvatarFetch,
 }: DoctorScheduleViewProps) {
+  const doctorName = String(doctor.doctor.name ?? "").trim();
+  const doctorInitial = doctorName.charAt(0).toUpperCase() || "?";
+
   // Urutkan jadwal berdasarkan tanggal (pakai parse lokal untuk menghindari efek timezone pada date-only string).
   const sortedSchedule = useMemo(() => {
     return [...doctor.schedule].sort(
@@ -118,7 +121,7 @@ export function DoctorScheduleView({
                   </span>
                 </div>
                 <h2 className="text-2xl font-bold leading-tight mb-2">
-                  {doctor.doctor.name}
+                  {doctorName || "-"}
                 </h2>
               
             {doctor.schedule.length > 0 && (
@@ -139,7 +142,7 @@ export function DoctorScheduleView({
                 <Avatar className="size-23 rounded-lg">
                   <AvatarImage src={avatarSrc ?? undefined} />
                   <AvatarFallback className="rounded-lg">
-                    {isLoadingAvatar ? <Spinner /> : doctor.doctor.name.charAt(0)}
+                    {isLoadingAvatar ? <Spinner /> : doctorInitial}
                   </AvatarFallback>
                 </Avatar>
               </div>

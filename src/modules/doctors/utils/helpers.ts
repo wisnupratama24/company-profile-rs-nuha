@@ -7,8 +7,8 @@ import { id as idLocale } from "date-fns/locale";
  * Mengubah text menjadi "Camel Case" versi UI (Title Case per kata).
  * Contoh: "gigi dan mulut" -> "Gigi Dan Mulut", "THT" -> "THT".
  */
-export function toTitleCaseWords(input: string): string {
-  const normalized = input
+export function toTitleCaseWords(input: string | null | undefined): string {
+  const normalized = String(input ?? "")
     .replace(/[_-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -38,7 +38,7 @@ export function toTitleCaseWords(input: string): string {
  * - Nama diubah menjadi Camel/Title Case
  * - Jika input sudah diawali "spesialis", prefix tidak digandakan
  */
-export function formatSpesialisLabel(spesialisName: string): string {
+export function formatSpesialisLabel(spesialisName: string | null | undefined): string {
   const raw = (spesialisName ?? "").trim();
   if (!raw) return "Spesialis";
 
