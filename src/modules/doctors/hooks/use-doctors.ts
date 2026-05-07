@@ -2,10 +2,10 @@
 import {
   fetchDoctorSchedules,
   fetchDoctorScheduleById,
-  fetchPolis,
+  fetchSpesialis,
   FetchDoctorScheduleParams,
 } from "@/services/doctors";
-import { DoctorScheduleData, Poli } from "../utils/constants";
+import { DoctorScheduleData, Spesialis } from "../utils/constants";
 
 /**
  * Hook to fetch doctor schedules with optional filters
@@ -34,13 +34,13 @@ export function useDoctorSchedule(id: number | null, startDate?: Date, endDate?:
 }
 
 /**
- * Hook to fetch all polis
- * TODO: Replace with dedicated poli API when available
+ * Hook to fetch all spesialis
+ * TODO: Replace with dedicated spesialis API when available
  */
-export function usePolis(startDate?: Date, endDate?: Date) {
-  return useQuery<Poli[]>({
-    queryKey: ["polis", startDate?.toISOString(), endDate?.toISOString()],
-    queryFn: () => fetchPolis(startDate, endDate),
+export function useSpesialis(startDate?: Date, endDate?: Date) {
+  return useQuery<Spesialis[]>({
+    queryKey: ["Spesialis", startDate?.toISOString(), endDate?.toISOString()],
+    queryFn: () => fetchSpesialis(startDate, endDate),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }

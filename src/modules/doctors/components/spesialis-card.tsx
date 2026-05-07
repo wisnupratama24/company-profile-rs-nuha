@@ -3,36 +3,36 @@
 import { motion } from "motion/react";
 import { CalendarIcon, Clock, ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { formatPoliLabel } from "../utils/helpers";
+import { formatSpesialisLabel } from "../utils/helpers";
 
 /**
- * Kartu ringkasan Poli.
+ * Kartu ringkasan Spesialis.
  *
  * Kegunaan:
- * - Ditampilkan pada mode "Semua Poli" untuk memberi ringkasan cepat per poli:
+ * - Ditampilkan pada mode "Semua Spesialis" untuk memberi ringkasan cepat per Spesialis:
  *   jumlah dokter dan total slot jadwal yang tersedia.
- * - Saat diklik, biasanya akan memicu pemilihan poli (untuk memfilter daftar dokter).
+ * - Saat diklik, biasanya akan memicu pemilihan Spesialis (untuk memfilter daftar dokter).
  */
-interface PoliCardProps {
-  /** Nama poli yang ditampilkan di judul kartu. */
+interface SpesialisCardProps {
+  /** Nama spesialis yang ditampilkan di judul kartu. */
   name: string;
-  /** Jumlah dokter pada poli tersebut (untuk info ringkas). */
+  /** Jumlah dokter pada spesialis tersebut (untuk info ringkas). */
   doctors: number;
-  /** Total slot yang tersedia pada poli tersebut (hasil agregasi dari jadwal dokter). */
+  /** Total slot yang tersedia pada spesialis tersebut (hasil agregasi dari jadwal dokter). */
   availableSlots: number;
   /** Index urutan kartu (dipakai untuk delay animasi agar muncul bertahap). */
   index: number;
-  /** Handler saat kartu diklik (umumnya: set selected poli). */
+  /** Handler saat kartu diklik (umumnya: set selected spesialis). */
   onClick: () => void;
 }
 
-export function PoliCard({
+export function SpesialisCard({
   name,
   doctors,
   availableSlots,
   index,
   onClick,
-}: PoliCardProps) {
+}: SpesialisCardProps) {
   return (
     <motion.div
       key={name}
@@ -45,12 +45,12 @@ export function PoliCard({
     >
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{formatPoliLabel(name)}</h3>
+          <h3 className="text-lg font-semibold">{formatSpesialisLabel(name)}</h3>
           <p className="text-sm text-muted-foreground">
             {doctors} dokter tersedia
           </p>
         </div>
-        <ArrowRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+        <ArrowRight className="h-5 w-5 text-muted-foreground" />
       </div>
       <Separator className="mb-3" />
       <div className="flex items-center gap-3 text-sm text-muted-foreground">

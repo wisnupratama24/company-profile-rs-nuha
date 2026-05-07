@@ -4,7 +4,7 @@ import {
   DoctorScheduleData,
   DoctorScheduleApiResponse,
   DoctorScheduleApiItem,
-  Poli,
+  Spesialis,
 } from "@/modules/doctors/utils/constants";
 import { c } from "@/config";
 
@@ -33,7 +33,7 @@ const DOCTOR_PROFILE_VIEW_ID = 107;
 const DEFAULT_LIMIT = 1000;
 
 export interface FetchDoctorScheduleParams {
-  poli?: string;
+  spesialis?: string;
   search?: string;
   startDate?: Date;
   endDate?: Date;
@@ -193,7 +193,7 @@ function transformApiResponse(items: DoctorScheduleApiItem[]): DoctorScheduleDat
         id: String(doctor.id_dokter),
         name: doctor.nama_dokter,
         specialization: doctor.nama_spesialis,
-        poliCode: doctor.kode_spesialis,
+        spesialisCode: doctor.kode_spesialis,
       },
       schedule: scheduleDays,
     };
@@ -206,20 +206,20 @@ function transformApiResponse(items: DoctorScheduleApiItem[]): DoctorScheduleDat
  * Dipakai untuk membangun filter poli di UI. Karena belum ada endpoint khusus poli,
  * kita ambil unik berdasarkan `kode_spesialis` dari list jadwal yang didapat.
  */
-function extractPolis(items: DoctorScheduleApiItem[]): Poli[] {
-  const poliMap = new Map<string, { name: string; doctorIds: Set<number> }>();
+function extractSpesialis(items: DoctorScheduleApiItem[]): Spesialis[] {
+  const spesialisMap = new Map<string, { name: string; doctorIds: Set<number> }>();
 
   items.forEach((item) => {
-    if (!poliMap.has(item.kode_spesialis)) {
-      poliMap.set(item.kode_spesialis, {
+    if (!spesialisMap.has(item.kode_spesialis)) {
+      spesialisMap.set(item.kode_spesialis, {
         name: item.nama_spesialis,
         doctorIds: new Set(),
       });
     }
-    poliMap.get(item.kode_spesialis)!.doctorIds.add(item.id_dokter);
+    spesialisMap.get(item.kode_spesialis)!.doctorIds.add(item.id_dokter);
   });
 
-  return Array.from(poliMap.entries()).map(([code, data]) => ({
+  return Array.from(spesialisMap.entries()).map(([code, data]) => ({
     code,
     name: data.name,
     doctorCount: data.doctorIds.size,
@@ -335,7 +335,7 @@ export async function fetchDoctorSchedules(
  * Karena belum ada endpoint khusus list poli, kita ambil dari jadwal dokter pada range tanggal.
  * Hasilnya unik berdasarkan `kode_spesialis`.
  */
-export async function fetchPolis(startDate?: Date, endDate?: Date): Promise<Poli[]> {
+export async function fetchSpesialis(startDate?: Date, endDate?: Date): Promise<Spesialis[]> {
   try {
     let data: DoctorScheduleApiResponse;
     const start = startDate || new Date();
@@ -394,9 +394,9 @@ export async function fetchPolis(startDate?: Date, endDate?: Date): Promise<Poli
       throw new Error(data.meta_data.message);
     }
 
-    return extractPolis(data.data.list);
+    return extractSpesialis(data.data.list);
   } catch (error) {
-    console.error("Error fetching polis:", error);
+    console.error("Error fetching spesialis:", error);
     throw error;
   }
 }

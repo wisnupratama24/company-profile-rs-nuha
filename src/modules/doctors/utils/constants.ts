@@ -46,13 +46,13 @@ export interface DoctorScheduleApiResponse {
 
 /**
  * Model dokter yang sudah diseragamkan untuk kebutuhan UI.
- * Dipakai di komponen (list dokter, filter poli, dll) supaya field-nya konsisten.
+ * Dipakai di komponen (list dokter, filter Spesialis, dll) supaya field-nya konsisten.
  */
 export interface Doctor {
   id: string;
   name: string;
   specialization: string;
-  poliCode: string;
+  spesialisCode: string;
 }
 
 /**
@@ -85,13 +85,13 @@ export interface DoctorScheduleData {
   schedule: ScheduleDay[];
 }
 
-// ============ Tipe Poli ============
+// ============ Tipe Spesialis ============
 
 /**
- * Ringkasan poli untuk kebutuhan UI filter (dan statistik sederhana).
+ * Ringkasan spesialis untuk kebutuhan UI filter (dan statistik sederhana).
  * `doctorCount` biasanya hasil agregasi dari daftar dokter yang ada.
  */
-export interface Poli {
+export interface Spesialis {
   code: string;
   name: string;
   doctorCount: number;

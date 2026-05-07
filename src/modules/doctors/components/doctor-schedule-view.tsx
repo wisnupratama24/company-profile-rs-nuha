@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { DoctorScheduleData } from "../utils/constants";
-import { formatPoliLabel, getDateOnlyKey, getDayAvailableSlotsCount, parseDateOnlyLocal } from "../utils/helpers";
+import { formatSpesialisLabel, getDateOnlyKey, getDayAvailableSlotsCount, parseDateOnlyLocal } from "../utils/helpers";
 import { useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useDoctorAvatar } from "../hooks/use-doctor-avatar";
@@ -107,14 +107,14 @@ export function DoctorScheduleView({
       className="border rounded-lg p-6 bg-white"
     >
       <div className="space-y-6">
-        {/* Header kartu: poli + nama dokter + ringkasan tanggal & jumlah jadwal praktik */}
+        {/* Header kartu: spesialis + nama dokter + ringkasan tanggal & jumlah jadwal praktik */}
         <div className="space-y-4">
           <div>
             <div className="flex justify-between items-center gap-2">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary font-medium">
-                    {formatPoliLabel(doctor.doctor.specialization)}
+                    {formatSpesialisLabel(doctor.doctor.specialization)}
                   </span>
                 </div>
                 <h2 className="text-2xl font-bold leading-tight mb-2">
