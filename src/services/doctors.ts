@@ -306,16 +306,18 @@ export async function fetchDoctorSchedules(
 
     // Client-side filter by poli name (if API doesn't support it directly)
     if (params?.poli) {
-      doctors = doctors.filter(
-        (d) => d.doctor.specialization.toLowerCase() === params.poli!.toLowerCase()
-      );
+      const targetPoli = String(params.poli ?? "").toLowerCase();
+      doctors = doctors.filter((d) => {
+        const doctorPoli = String(d.doctor.specialization ?? "").toLowerCase();
+        return doctorPoli === targetPoli;
+      });
     }
 
     // Client-side filter by search (doctor name)
     if (params?.search) {
-      const searchLower = params.search.toLowerCase();
+      const searchLower = String(params.search ?? "").toLowerCase();
       doctors = doctors.filter((d) =>
-        d.doctor.name.toLowerCase().includes(searchLower)
+        String(d.doctor.name ?? "").toLowerCase().includes(searchLower)
       );
     }
 
